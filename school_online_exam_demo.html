@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>School Online Examination</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#172033}
+header{background:#123b70;color:white;padding:22px 16px;text-align:center}
+main{max-width:760px;margin:24px auto;padding:0 14px}
+.card{background:white;border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 4px 18px #122b4b12}
+h1{font-size:23px;margin:0 0 8px}h2{font-size:19px;margin-top:0}
+label{display:block;font-weight:600;margin:12px 0 6px}
+input,select,button{width:100%;padding:12px;border:1px solid #ccd5e2;border-radius:8px;font-size:16px}
+button{background:#1764b0;color:white;border:0;font-weight:bold;margin-top:12px;cursor:pointer}
+button.secondary{background:#e8eef7;color:#123b70}
+.note{color:#64748b;font-size:14px;line-height:1.5}
+.hidden{display:none}.question{padding:12px 0;border-bottom:1px solid #e5eaf1}
+.option{display:flex;gap:9px;align-items:center;margin:9px 0;font-weight:normal}
+.option input{width:auto}
+#timer{font-weight:bold;color:#c0392b}
+</style>
+</head>
+<body>
+<header><h1>School Online Examination</h1><div>Learning • Assessment • Results</div></header>
+<main>
+<section class="card" id="login">
+<h2>Student Login</h2>
+<p class="note">Demo interface — connect a secure school server before using real student accounts or examinations.</p>
+<label for="student">Student name</label><input id="student" placeholder="Enter your name">
+<label for="grade">Grade</label><select id="grade"><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select>
+<button onclick="startExam()">Start sample exam</button>
+</section>
+<section class="card hidden" id="exam">
+<div style="display:flex;justify-content:space-between;gap:12px"><h2>Sample ICT Exam</h2><span id="timer">10:00</span></div>
+<p class="note">Sample questions only. Your answers are kept in this browser demo.</p>
+<form id="quiz">
+<div class="question"><b>1. Which component is known as the brain of a computer?</b>
+<label class="option"><input type="radio" name="q1" value="A"> RAM</label><label class="option"><input type="radio" name="q1" value="B"> CPU</label><label class="option"><input type="radio" name="q1" value="C"> Monitor</label></div>
+<div class="question"><b>2. HTML is used mainly to:</b>
+<label class="option"><input type="radio" name="q2" value="A"> Structure web pages</label><label class="option"><input type="radio" name="q2" value="B"> Repair hardware</label><label class="option"><input type="radio" name="q2" value="C"> Create electricity</label></div>
+<div class="question"><b>3. True or False: A strong password should be shared with classmates.</b>
+<label class="option"><input type="radio" name="q3" value="T"> True</label><label class="option"><input type="radio" name="q3" value="F"> False</label></div>
+<button type="button" onclick="submitExam()">Submit exam</button>
+</form>
+</section>
+<section class="card hidden" id="result"><h2>Exam Result</h2><p id="score"></p><button class="secondary" onclick="location.reload()">Return to home</button></section>
+<section class="card"><h2>School Portal</h2><p class="note">Future modules: Teacher dashboard • Admin dashboard • Question bank • Classes and subjects • Exam schedule • Result reports.</p></section>
+</main>
+<script>
+let seconds=600,clock;
+function startExam(){
+ const n=document.getElementById('student').value.trim();
+ if(!n){alert('Please enter your name.');return}
+ document.getElementById('login').classList.add('hidden');document.getElementById('exam').classList.remove('hidden');
+ clock=setInterval(()=>{seconds--;document.getElementById('timer').textContent=Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0');if(seconds<=0)submitExam()},1000)
+}
+function submitExam(){
+ clearInterval(clock);let s=0;
+ if(document.querySelector('input[name=q1]:checked')?.value==='B')s++;
+ if(document.querySelector('input[name=q2]:checked')?.value==='A')s++;
+ if(document.querySelector('input[name=q3]:checked')?.value==='F')s++;
+ document.getElementById('exam').classList.add('hidden');document.getElementById('result').classList.remove('hidden');
+ document.getElementById('score').textContent=document.getElementById('student').value+' — Score: '+s+' / 3';
+}
+</script>
+</body></html>
