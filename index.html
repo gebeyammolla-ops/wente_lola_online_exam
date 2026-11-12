@@ -306,6 +306,25 @@ document.getElementById("resultsList").innerHTML=html;
 
 }
 
+function saveExamResult(grade, subject, score, total){
+
+let examResults = JSON.parse(localStorage.getItem("examResults") || "[]");
+
+let result = {
+student: currentUser,
+grade: grade,
+subject: subject,
+score: score,
+total: total,
+date: new Date().toLocaleDateString()
+};
+
+examResults.push(result);
+
+localStorage.setItem("examResults", JSON.stringify(examResults));
+
+}
+
 </script>
 </body>
 </html>
