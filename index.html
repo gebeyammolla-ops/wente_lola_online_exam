@@ -323,9 +323,53 @@ html+="</table>";
 
 }
 html+="<br><button onclick='window.print()'>Print Results</button>";
+  html+="<br><button onclick='exportResults()'>Export Results to Excel</button>";
 document.getElementById("resultsList").innerHTML=html;
 
 }
+function exportResults(){
+
+let rows=document.querySelectorAll("#resultsList table tr");
+
+if(rows.length<=1){
+alert("No results available to export!");
+return;
+}
+
+let csv=[];
+
+rows.forEach((row,index)=>{
+
+if(index===0 || row.style.display!=="none"){
+
+let cells=row.querySelectorAll("th,td");
+
+let data=[];
+
+cells.forEach(cell=>{
+let value=cell.innerText.replace(/"/g,'""');
+data.push('"'+value+'"');
+});
+
+csv.push(data.join(","));
+
+}
+
+});
+
+let file=new Blob(["\uFEFF"+csv.join("\n")],{
+type:"text/csv;charset=utf-8;"
+});
+
+let link=document.createElement("a");
+link.href=URL.createObjectURL(file);
+link.download="Student_Results.csv";
+link.click();
+
+URL.revokeObjectURL(link.href);
+
+}
+  
   function filterResults(){
 
 let grade=document.getElementById("filterGrade").value;
