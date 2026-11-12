@@ -273,8 +273,27 @@ submitRealExam();
 function showResults(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
-
 let html="<h3>Student Results</h3>";
+
+html+="<label>Filter by Grade:</label>";
+html+="<select id='filterGrade' onchange='filterResults()'>";
+html+="<option value='All'>All Grades</option>";
+html+="<option>Grade 9</option>";
+html+="<option>Grade 10</option>";
+html+="<option>Grade 11</option>";
+html+="<option>Grade 12</option>";
+html+="</select>";
+
+html+="<label>Filter by Subject:</label>";
+html+="<select id='filterSubject' onchange='filterResults()'>";
+html+="<option value='All'>All Subjects</option>";
+html+="<option>Mathematics</option>";
+html+="<option>English</option>";
+html+="<option>Physics</option>";
+html+="<option>Chemistry</option>";
+html+="<option>Biology</option>";
+html+="<option>ICT</option>";
+html+="</select>";
 
 if(results.length===0){
 
@@ -305,6 +324,32 @@ html+="</table>";
 }
 html+="<br><button onclick='window.print()'>Print Results</button>";
 document.getElementById("resultsList").innerHTML=html;
+
+}
+  function filterResults(){
+
+let grade=document.getElementById("filterGrade").value;
+let subject=document.getElementById("filterSubject").value;
+
+let rows=document.querySelectorAll("#resultsList table tr");
+
+for(let i=1;i<rows.length;i++){
+
+let rowGrade=rows[i].cells[1].innerText;
+let rowSubject=rows[i].cells[2].innerText;
+
+if((grade==="All" || rowGrade===grade) &&
+(subject==="All" || rowSubject===subject)){
+
+rows[i].style.display="";
+
+}else{
+
+rows[i].style.display="none";
+
+}
+
+}
 
 }
 
