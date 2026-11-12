@@ -503,6 +503,32 @@ html+="<hr>";
 document.getElementById("myQuestions").innerHTML=html;
 
 }
+  function editQuestion(index){
+
+let allQuestions=JSON.parse(localStorage.getItem("questions")||"[]");
+
+let q=allQuestions[index];
+
+if(!q){
+alert("Question not found!");
+return;
+}
+
+document.getElementById("qGrade").value=q.grade;
+document.getElementById("qSubject").value=q.subject;
+document.getElementById("question").value=q.question;
+document.getElementById("optA").value=q.A;
+document.getElementById("optB").value=q.B;
+document.getElementById("optC").value=q.C;
+document.getElementById("optD").value=q.D;
+document.getElementById("correct").value=q.correct;
+
+editingQuestionIndex=index;
+
+document.getElementById("saveMsg").innerText=
+"Edit the question and click Update Question.";
+
+}
 
 function deleteQuestion(index){
 
