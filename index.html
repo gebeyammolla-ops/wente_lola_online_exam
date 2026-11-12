@@ -500,6 +500,43 @@ document.getElementById("teacherResults").innerHTML=html;
 
 }
 
+function filterTeacherResults(){
+
+let results=JSON.parse(localStorage.getItem("examResults")||"[]");
+
+let grade=document.getElementById("teacherFilterGrade").value;
+let subject=document.getElementById("teacherFilterSubject").value;
+
+let filtered=results.filter(r=>
+(grade==="All"||r.grade===grade)&&
+(subject==="All"||r.subject===subject)
+);
+
+let html="<h3>Filtered Student Results</h3>";
+
+if(filtered.length===0){
+
+html+="<p>No results found!</p>";
+
+}else{
+
+filtered.forEach((r,i)=>{
+
+html+=`<p><b>${i+1}. ${r.student}</b><br>`;
+html+=`Grade: ${r.grade}<br>`;
+html+=`Subject: ${r.subject}<br>`;
+html+=`Score: ${r.score}/${r.total}<br>`;
+html+=`Date: ${r.date}</p>`;
+html+="<hr>";
+
+});
+
+}
+
+document.getElementById("teacherResults").innerHTML=html;
+
+}
+
   
 function loadExam(){
 let grade=document.getElementById("studentGrade").value;
