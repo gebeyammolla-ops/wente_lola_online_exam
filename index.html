@@ -492,7 +492,7 @@ html+=`<p><b>${i+1}. ${q.question}</b><br>`;
 html+=`Grade: ${q.grade}<br>`;
 html+=`Subject: ${q.subject}<br>`;
 html+=`Correct Answer: ${q.correct}<br>`;
-html+=`<button onclick="window.editQuestion(${i})">Edit Question</button>`;
+html+=`<button onclick="alert(typeof window.editQuestion)">Edit Question</button>`;
 html+=`<button onclick="deleteQuestion(${i})">Delete Question</button></p>`;
 html+="<hr>";
 
