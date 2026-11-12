@@ -476,6 +476,28 @@ if(answer&&answer.value===q.correct)score++;
 document.getElementById("studentResult").innerText="Your Score: "+score+"/"+selected.length;
 
 saveExamResult(grade,subject,score,selected.length);
+  let reviewHTML="<h3>Exam Review</h3>";
+
+selected.forEach((q,i)=>{
+let answer=document.querySelector('input[name="exam'+i+'"]:checked');
+
+let chosen=answer?answer.value:"No Answer";
+
+reviewHTML+=`<p><b>${i+1}. ${q.question}</b></p>`;
+reviewHTML+=`<p>Your Answer: ${chosen} - ${answer?q[chosen]:"No Answer"}</p>`;
+reviewHTML+=`<p>Correct Answer: ${q.correct} - ${q[q.correct]}</p>`;
+reviewHTML+="<hr>";
+});
+
+let review=document.getElementById("examReview");
+
+if(!review){
+review=document.createElement("div");
+review.id="examReview";
+document.getElementById("studentResult").after(review);
+}
+
+review.innerHTML=reviewHTML;
 
 submitted.push({student:student,grade:grade,subject:subject});
 
