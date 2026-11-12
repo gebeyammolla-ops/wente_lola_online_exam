@@ -988,7 +988,20 @@ html+=`Date: ${r.date}</p><hr>`;
 document.getElementById("myHistory").innerHTML=html;
 
 }
+function saveExamSettings(){
 
+let settings={
+duration:document.getElementById("examDuration").value,
+passMark:document.getElementById("passMark").value,
+instructions:document.getElementById("examInstructions").value
+};
+
+localStorage.setItem("examSettings",JSON.stringify(settings));
+
+document.getElementById("settingsMsg").innerText=
+"Exam settings saved successfully!";
+
+}
 </script>
 </body>
 </html>
