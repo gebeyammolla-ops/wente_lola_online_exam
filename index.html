@@ -484,6 +484,24 @@ document.getElementById("myQuestions").innerHTML=html;
 
 }
 
+function deleteQuestion(index){
+
+let allQuestions=JSON.parse(localStorage.getItem("questions")||"[]");
+
+if(!confirm("Are you sure you want to delete this question?")){
+return;
+}
+
+allQuestions.splice(index,1);
+
+localStorage.setItem("questions",JSON.stringify(allQuestions));
+
+showMyQuestions();
+
+alert("Question deleted successfully!");
+
+}
+
 
 function showTeacherResults(){
 
