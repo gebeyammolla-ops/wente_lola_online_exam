@@ -581,6 +581,46 @@ URL.revokeObjectURL(url);
 }
 
   
+function printTeacherResults(){
+
+let results=JSON.parse(localStorage.getItem("examResults")||"[]");
+
+let grade=document.getElementById("teacherFilterGrade").value;
+let subject=document.getElementById("teacherFilterSubject").value;
+
+let filtered=results.filter(r=>{
+return (grade==="All"||r.grade===grade)&&
+(subject==="All"||r.subject===subject);
+});
+
+if(filtered.length===0){
+alert("No results to print!");
+return;
+}
+
+let content="<h2>Wonte Lola School - Student Results</h2>";
+content+="<table border='1' cellpadding='8' cellspacing='0'>";
+content+="<tr><th>Student</th><th>Grade</th><th>Subject</th><th>Score</th><th>Date</th></tr>";
+
+filtered.forEach(r=>{
+content+=`<tr>
+<td>${r.student}</td>
+<td>${r.grade}</td>
+<td>${r.subject}</td>
+<td>${r.score}/${r.total}</td>
+<td>${r.date}</td>
+</tr>`;
+});
+
+content+="</table>";
+
+let win=window.open("","","width=800,height=600");
+win.document.write(content);
+win.document.close();
+win.print();
+
+}
+
 function loadExam(){
 let grade=document.getElementById("studentGrade").value;
 let subject=document.getElementById("studentSubject").value;
