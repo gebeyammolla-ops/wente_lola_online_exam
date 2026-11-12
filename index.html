@@ -40,20 +40,38 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 <div class="box hidden" id="dashboard">
 <h2 id="dashTitle"></h2>
 <p id="welcome"></p>
+
+
 <div id="studentArea" class="hidden">
+<h3>Take Examination</h3>
+
 <label>Grade</label>
-<select id="grade">
-<option>Grade 9</option><option>Grade 10</option>
-<option>Grade 11</option><option>Grade 12</option>
+<select id="studentGrade">
+<option>Grade 9</option>
+<option>Grade 10</option>
+<option>Grade 11</option>
+<option>Grade 12</option>
 </select>
+
 <label>Subject</label>
-<select id="subject">
-<option>Mathematics</option><option>English</option>
-<option>Physics</option><option>Chemistry</option>
-<option>Biology</option><option>ICT</option>
+<select id="studentSubject">
+<option>Mathematics</option>
+<option>English</option>
+<option>Physics</option>
+<option>Chemistry</option>
+<option>Biology</option>
+<option>ICT</option>
 </select>
-<button onclick="startExam()">Start Exam</button>
+
+<button onclick="loadExam()">Load Exam</button>
+
+<div id="examQuestions"></div>
+<button onclick="submitRealExam()">Submit Exam</button>
+<p id="studentResult"></p>
 </div>
+
+
+  
 
 <div id="staffArea" class="hidden">
 <h3>Question Management</h3>
