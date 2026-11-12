@@ -680,6 +680,30 @@ examResults.push(result);
 localStorage.setItem("examResults", JSON.stringify(examResults));
 
 }
+  function showMyHistory(){
+
+let results=JSON.parse(localStorage.getItem("examResults")||"[]");
+
+let myResults=results.filter(r=>r.student===currentUser);
+
+let html="<h3>My Exam History</h3>";
+
+if(myResults.length===0){
+html+="<p>No exam history available.</p>";
+}else{
+
+myResults.forEach((r,i)=>{
+html+=`<p><b>${i+1}. ${r.subject}</b><br>`;
+html+=`Grade: ${r.grade}<br>`;
+html+=`Score: ${r.score}/${r.total}<br>`;
+html+=`Date: ${r.date}</p><hr>`;
+});
+
+}
+
+document.getElementById("myHistory").innerHTML=html;
+
+}
 
 </script>
 </body>
