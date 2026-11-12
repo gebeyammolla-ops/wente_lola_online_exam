@@ -185,6 +185,48 @@ localStorage.setItem("questions",JSON.stringify(questions));
 document.getElementById("saveMsg").innerText="Question saved successfully!";
 }
 
+  
+function loadExam(){
+let grade=document.getElementById("studentGrade").value;
+let subject=document.getElementById("studentSubject").value;
+
+let questions=JSON.parse(localStorage.getItem("questions")||"[]");
+
+let selected=questions.filter(q=>q.grade===grade&&q.subject===subject);
+
+let html="";
+
+selected.forEach((q,i)=>{
+html+=`<p><b>${i+1}. ${q.question}</b></p>`;
+html+=`<label><input type="radio" name="exam${i}" value="A"> ${q.A}</label><br>`;
+html+=`<label><input type="radio" name="exam${i}" value="B"> ${q.B}</label><br>`;
+html+=`<label><input type="radio" name="exam${i}" value="C"> ${q.C}</label><br>`;
+html+=`<label><input type="radio" name="exam${i}" value="D"> ${q.D}</label><br>`;
+});
+
+document.getElementById("examQuestions").innerHTML=
+selected.length?html:"No questions available!";
+}
+
+function submitRealExam(){
+let questions=JSON.parse(localStorage.getItem("questions")||"[]");
+
+let grade=document.getElementById("studentGrade").value;
+let subject=document.getElementById("studentSubject").value;
+
+let selected=questions.filter(q=>q.grade===grade&&q.subject===subject);
+let score=0;
+
+selected.forEach((q,i)=>{
+let answer=document.querySelector('input[name="exam'+i+'"]:checked');
+if(answer&&answer.value===q.correct)score++;
+});
+
+document.getElementById("studentResult").innerText=
+"Your Score: "+score+"/"+selected.length;
+}
+
+
 </script>
 </body>
 </html>
