@@ -219,6 +219,7 @@ selected.length?html:"No questions available!";
 startTimer();
 }
 
+
 function submitRealExam(){
 let questions=JSON.parse(localStorage.getItem("questions")||"[]");
 
@@ -235,7 +236,10 @@ if(answer&&answer.value===q.correct)score++;
 
 document.getElementById("studentResult").innerText=
 "Your Score: "+score+"/"+selected.length;
+
+saveExamResult(grade,subject,score,selected.length);
 }
+
 
 let examTime = 60 * 60;
 let timerInterval;
