@@ -449,6 +449,35 @@ document.getElementById("myQuestions").innerHTML=html;
 
 }
 
+function showTeacherResults(){
+
+let results=JSON.parse(localStorage.getItem("examResults")||"[]");
+
+let html="<h3>Student Results</h3>";
+
+if(results.length===0){
+
+html+="<p>No student results available!</p>";
+
+}else{
+
+results.forEach((r,i)=>{
+
+html+=`<p><b>${i+1}. ${r.student}</b><br>`;
+html+=`Grade: ${r.grade}<br>`;
+html+=`Subject: ${r.subject}<br>`;
+html+=`Score: ${r.score}/${r.total}<br>`;
+html+=`Date: ${r.date}</p>`;
+html+="<hr>";
+
+});
+
+}
+
+document.getElementById("teacherResults").innerHTML=html;
+
+}
+
   
 function loadExam(){
 let grade=document.getElementById("studentGrade").value;
