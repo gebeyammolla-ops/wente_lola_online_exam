@@ -64,6 +64,9 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 </select>
 
 <button onclick="loadExam()">Load Exam</button>
+  
+
+<p id="timer" style="font-size:20px;color:red;font-weight:bold;"></p>
 
 <div id="examQuestions"></div>
 <button onclick="submitRealExam()">Submit Exam</button>
@@ -205,7 +208,13 @@ html+=`<label><input type="radio" name="exam${i}" value="D"> ${q.D}</label><br>`
 });
 
 document.getElementById("examQuestions").innerHTML=
+selected.length?html:"No questions available!"
+
+  document.getElementById("examQuestions").innerHTML=
 selected.length?html:"No questions available!";
+
+startTimer();
+}
 }
 
 function submitRealExam(){
@@ -224,6 +233,30 @@ if(answer&&answer.value===q.correct)score++;
 
 document.getElementById("studentResult").innerText=
 "Your Score: "+score+"/"+selected.length;
+}
+
+let examTime = 60 * 60;
+let timerInterval;
+
+function startTimer(){
+clearInterval(timerInterval);
+examTime = 60 * 60;
+
+timerInterval = setInterval(function(){
+let minutes = Math.floor(examTime / 60);
+let seconds = examTime % 60;
+
+document.getElementById("timer").innerText =
+"Time Left: " +
+minutes + ":" + String(seconds).padStart(2,"0");
+
+examTime--;
+
+if(examTime < 0){
+clearInterval(timerInterval);
+submitRealExam();
+}
+},1000);
 }
 
 
