@@ -88,6 +88,19 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 <button onclick="showResults()">View All Results</button>
 
 <div id="adminResults"></div>
+  <h3>Manage Teachers</h3>
+
+<label>Teacher Username</label>
+<input id="teacherUsername" placeholder="Enter username">
+
+<label>Teacher Password</label>
+<input id="teacherPassword" type="password" placeholder="Enter password">
+
+<button onclick="addTeacher()">Register Teacher</button>
+
+<p id="teacherMsg"></p>
+
+<div id="teacherList"></div>
 
 </div>
   
@@ -156,6 +169,73 @@ document.getElementById("home").classList.add("hidden");
 document.getElementById("login").classList.remove("hidden");
 document.getElementById("loginTitle").innerText=r+" Login";
 }
+function addTeacher(){
+
+let username=document.getElementById("teacherUsername").value.trim();
+let password=document.getElementById("teacherPassword").value;
+
+if(!username||!password){
+alert("Enter teacher username and password");
+return;
+}
+
+let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
+
+teachers.push({
+username:username,
+password:password
+});
+
+localStorage.setItem("teachers",JSON.stringify(teachers));
+
+document.getElementById("teacherMsg").innerText=
+"Teacher Registered Successfully!";
+
+document.getElementById("teacherUsername").value="";
+document.getElementById("teacherPassword").value="";
+
+showTeachers();
+
+}
+  function showTeachers(){
+
+let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
+
+let html="<h4>Registered Teachers</h4>";
+
+html+="<table border='1'>";
+html+="<tr><th>Username</th><th>Action</th></tr>";
+
+teachers.forEach((t,i)=>{
+
+html+="<tr>";
+html+="<td>"+t.username+"</td>";
+html+="<td><button onclick='deleteTeacher("+i+")'>Delete</button></td>";
+html+="</tr>";
+
+});
+
+html+="</table>";
+
+document.getElementById("teacherList").innerHTML=html;
+
+}
+  function deleteTeacher(index){
+
+let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
+
+if(confirm("Delete this teacher?")){
+
+teachers.splice(index,1);
+
+localStorage.setItem("teachers",JSON.stringify(teachers));
+
+showTeachers();
+
+}
+
+}
+  
 function updateAdminDashboard(){
 
 let questions=JSON.parse(localStorage.getItem("questions")||"[]");
@@ -179,12 +259,28 @@ function login(){
 let u=document.getElementById("username").value.trim();
   currentUser=u;
 let p=document.getElementById("password").value;
+  if(role==="Teacher"){
+
+let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
+
+let validTeacher=teachers.find(t=>t.username===u && t.password===p);
+
+if(!validTeacher){
+
+document.getElementById("msg").innerText="Invalid Teacher Username or Password";
+
+return;
+
+}
+
+}
 if(!u||!p){document.getElementById("msg").innerText="Enter username and password";return;}
 document.getElementById("login").classList.add("hidden");
 document.getElementById("dashboard").classList.remove("hidden");
 document.getElementById("dashTitle").innerText=role+" Dashboard";
   if(role==="Admin"){
 updateAdminDashboard();
+showTeachers();
 }
 document.getElementById("welcome").innerText="Welcome "+u;
   if(role==="Admin"){
