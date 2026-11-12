@@ -756,9 +756,17 @@ selected.forEach((q,i)=>{
 let answer=document.querySelector('input[name="exam'+i+'"]:checked');
 if(answer&&answer.value===q.correct)score++;
 });
+let settings=JSON.parse(localStorage.getItem("examSettings")||"{}");
 
-document.getElementById("studentResult").innerText="Your Score: "+score+"/"+selected.length;
+let passMark=parseInt(settings.passMark)||50;
 
+let percentage=(score/selected.length)*100;
+
+let status=percentage>=passMark?"PASS":"FAIL";
+
+document.getElementById("studentResult").innerText=
+"Your Score: "+score+"/"+selected.length+
+" ("+percentage.toFixed(1)+"%) - "+status;
 saveExamResult(grade,subject,score,selected.length);
   let reviewHTML="<h3>Exam Review</h3>";
 
