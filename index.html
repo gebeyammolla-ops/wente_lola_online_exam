@@ -141,6 +141,32 @@ document.getElementById("result").innerText="Score: "+score+"/1";
 function goHome(){
 location.reload();
 }
+  
+let questions = JSON.parse(localStorage.getItem("questions") || "[]");
+
+function saveQuestion(){
+let q = {
+grade: document.getElementById("qGrade").value,
+subject: document.getElementById("qSubject").value,
+question: document.getElementById("question").value,
+A: document.getElementById("optA").value,
+B: document.getElementById("optB").value,
+C: document.getElementById("optC").value,
+D: document.getElementById("optD").value,
+correct: document.getElementById("correct").value
+};
+
+if(!q.question || !q.A || !q.B || !q.C || !q.D){
+document.getElementById("saveMsg").innerText="Please fill all fields!";
+return;
+}
+
+questions.push(q);
+localStorage.setItem("questions",JSON.stringify(questions));
+
+document.getElementById("saveMsg").innerText="Question saved successfully!";
+}
+
 </script>
 </body>
 </html>
