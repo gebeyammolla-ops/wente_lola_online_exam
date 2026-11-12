@@ -1,17 +1,16 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wonte Lola School Exam System</title>
 <style>
 body{font-family:Arial;background:#eef2f7;margin:0}
-header{background:#123b70;color:white;padding:20px;text-align:center}
-.box{background:white;padding:25px;margin:25px auto;
-max-width:450px;border-radius:12px;box-shadow:0 3px 12px #bbb}
-input,select,button{width:100%;padding:12px;margin:8px 0;
-box-sizing:border-box;font-size:16px}
+header{background:#123b70;color:white;text-align:center;padding:20px}
+.box{background:white;padding:22px;margin:20px auto;max-width:450px;border-radius:12px;box-shadow:0 2px 8px #bbb}
+input,select,button{width:100%;padding:12px;margin:8px 0;box-sizing:border-box}
 button{background:#123b70;color:white;border:0;border-radius:6px}
 .hidden{display:none}
 </style>
@@ -22,34 +21,50 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 <p>Online Examination System</p>
 </header>
 
-<div class="box" id="login">
-<h2>Student Login</h2>
-<input id="username" placeholder="Student Username">
+<div class="box" id="home">
+<h2>Select Login Type</h2>
+<button onclick="showLogin('Admin')">Admin Login</button>
+<button onclick="showLogin('Teacher')">Teacher Login</button>
+<button onclick="showLogin('Student')">Student Login</button>
+</div>
+
+<div class="box hidden" id="login">
+<h2 id="loginTitle"></h2>
+<input id="username" placeholder="Username">
 <input id="password" type="password" placeholder="Password">
-<button onclick="loginStudent()">Login</button>
-<p id="message"></p>
+<button onclick="login()">Login</button>
+<button onclick="goHome()">Back</button>
+<p id="msg"></p>
 </div>
 
 <div class="box hidden" id="dashboard">
-<h2>Student Dashboard</h2>
+<h2 id="dashTitle"></h2>
 <p id="welcome"></p>
+<div id="studentArea" class="hidden">
 <label>Grade</label>
 <select id="grade">
-<option>Grade 7</option><option>Grade 8</option>
 <option>Grade 9</option><option>Grade 10</option>
 <option>Grade 11</option><option>Grade 12</option>
 </select>
 <label>Subject</label>
 <select id="subject">
-<option>ICT</option><option>Mathematics</option>
-<option>English</option><option>Biology</option>
-<option>Chemistry</option><option>Physics</option>
+<option>Mathematics</option><option>English</option>
+<option>Physics</option><option>Chemistry</option>
+<option>Biology</option><option>ICT</option>
 </select>
 <button onclick="startExam()">Start Exam</button>
 </div>
+<div id="staffArea" class="hidden">
+<p>Staff Dashboard Demo</p>
+<button onclick="alert('Exam management demo')">Manage Exams</button>
+<button onclick="alert('Student management demo')">Manage Students</button>
+<button onclick="alert('Results demo')">View Results</button>
+</div>
+<button onclick="goHome()">Logout</button>
+</div>
 
 <div class="box hidden" id="exam">
-<h2>ICT Sample Exam</h2>
+<h2>Sample Examination</h2>
 <p>1. What does CPU stand for?</p>
 <label><input type="radio" name="q1" value="a"> Central Processing Unit</label>
 <label><input type="radio" name="q1" value="b"> Computer Personal Unit</label>
@@ -58,16 +73,26 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 </div>
 
 <script>
-function loginStudent(){
+let role="";
+function showLogin(r){
+role=r;
+document.getElementById("home").classList.add("hidden");
+document.getElementById("login").classList.remove("hidden");
+document.getElementById("loginTitle").innerText=r+" Login";
+}
+function login(){
 let u=document.getElementById("username").value.trim();
 let p=document.getElementById("password").value;
-if(u===""||p===""){
-document.getElementById("message").innerText="Enter username and password";
-return;
-}
+if(!u||!p){document.getElementById("msg").innerText="Enter username and password";return;}
 document.getElementById("login").classList.add("hidden");
 document.getElementById("dashboard").classList.remove("hidden");
-document.getElementById("welcome").innerText="Welcome, "+u;
+document.getElementById("dashTitle").innerText=role+" Dashboard";
+document.getElementById("welcome").innerText="Welcome "+u;
+if(role==="Student"){
+document.getElementById("studentArea").classList.remove("hidden");
+}else{
+document.getElementById("staffArea").classList.remove("hidden");
+}
 }
 function startExam(){
 document.getElementById("dashboard").classList.add("hidden");
@@ -76,8 +101,10 @@ document.getElementById("exam").classList.remove("hidden");
 function submitExam(){
 let a=document.querySelector('input[name="q1"]:checked');
 let score=a&&a.value==="a"?1:0;
-document.getElementById("result").innerText=
-"Your score: "+score+"/1";
+document.getElementById("result").innerText="Score: "+score+"/1";
+}
+function goHome(){
+location.reload();
 }
 </script>
 </body>
