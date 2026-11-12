@@ -719,7 +719,14 @@ html+=`<label><input type="radio" name="exam${i}" value="C"> ${q.C}</label><br>`
 html+=`<label><input type="radio" name="exam${i}" value="D"> ${q.D}</label><br>`;
 });
 
-document.getElementById("examQuestions").innerHTML=selected.length?html:"No questions available!";
+let settings=JSON.parse(localStorage.getItem("examSettings")||"{}");
+
+let instructions=settings.instructions||
+"Read all questions carefully. Choose the correct answer.";
+
+document.getElementById("examQuestions").innerHTML=
+"<h3>Exam Instructions</h3><p>"+instructions+"</p>"+
+(selected.length?html:"No questions available!");
 
 startTimer();
 }
