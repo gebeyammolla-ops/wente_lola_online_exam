@@ -163,6 +163,8 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 <p id="result"></p>
 </div>
 
+
+  
 <script>
 let role="";
 function showLogin(r){
@@ -319,6 +321,9 @@ function login(){
 let u=document.getElementById("username").value.trim();
   currentUser=u;
 let p=document.getElementById("password").value;
+  
+if(role==="Student"){let students=JSON.parse(localStorage.getItem("students")||"[]");let validStudent=students.find(s=>s.username===u&&s.password===p);if(!validStudent){document.getElementById("msg").innerText="Invalid Student Username or Password";return;}currentUser=validStudent.username;}
+
   if(role==="Teacher"){
 
 let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
