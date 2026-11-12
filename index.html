@@ -190,6 +190,9 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 <button onclick="printTeacherResults()">Print Results</button>
 
 
+<button onclick="showTeacherStatistics()">Teacher Statistics</button>
+<div id="teacherStatistics"></div>
+
 </div>
 
 <button onclick="goHome()">Logout</button>
@@ -618,6 +621,41 @@ let win=window.open("","","width=800,height=600");
 win.document.write(content);
 win.document.close();
 win.print();
+
+}
+
+function showTeacherStatistics(){
+
+let results=JSON.parse(localStorage.getItem("examResults")||"[]");
+
+let grade=document.getElementById("teacherFilterGrade").value;
+let subject=document.getElementById("teacherFilterSubject").value;
+
+let filtered=results.filter(r=>{
+return (grade==="All"||r.grade===grade)&&
+(subject==="All"||r.subject===subject);
+});
+
+let total=filtered.length;
+let scoreSum=0;
+let passed=0;
+
+filtered.forEach(r=>{
+scoreSum+=Number(r.score);
+if(Number(r.score)/Number(r.total)>=0.5){
+passed++;
+}
+});
+
+let average=total?((scoreSum/total).toFixed(2)):"0";
+let passRate=total?((passed/total)*100).toFixed(2):"0";
+
+let html="<h3>Teacher Statistics</h3>";
+html+=`<p>Total Students: ${total}</p>`;
+html+=`<p>Average Score: ${average}</p>`;
+html+=`<p>Pass Rate: ${passRate}%</p>`;
+
+document.getElementById("teacherStatistics").innerHTML=html;
 
 }
 
