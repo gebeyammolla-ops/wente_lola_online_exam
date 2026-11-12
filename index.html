@@ -163,6 +163,28 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 <button onclick="showTeacherResults()">Student Results</button>
 <div id="teacherResults"></div>
 
+<label>Filter by Grade</label>
+<select id="teacherFilterGrade">
+<option value="All">All Grades</option>
+<option>Grade 9</option>
+<option>Grade 10</option>
+<option>Grade 11</option>
+<option>Grade 12</option>
+</select>
+
+<label>Filter by Subject</label>
+<select id="teacherFilterSubject">
+<option value="All">All Subjects</option>
+<option>Mathematics</option>
+<option>English</option>
+<option>Physics</option>
+<option>Chemistry</option>
+<option>Biology</option>
+<option>ICT</option>
+</select>
+
+<button onclick="filterTeacherResults()">Apply Filter</button>
+
 </div>
 
 <button onclick="goHome()">Logout</button>
