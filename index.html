@@ -54,12 +54,47 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 </select>
 <button onclick="startExam()">Start Exam</button>
 </div>
+
 <div id="staffArea" class="hidden">
-<p>Staff Dashboard Demo</p>
-<button onclick="alert('Exam management demo')">Manage Exams</button>
-<button onclick="alert('Student management demo')">Manage Students</button>
-<button onclick="alert('Results demo')">View Results</button>
+<h3>Question Management</h3>
+
+<label>Grade</label>
+<select id="qGrade">
+<option>Grade 9</option>
+<option>Grade 10</option>
+<option>Grade 11</option>
+<option>Grade 12</option>
+</select>
+
+<label>Subject</label>
+<select id="qSubject">
+<option>Mathematics</option>
+<option>English</option>
+<option>Physics</option>
+<option>Chemistry</option>
+<option>Biology</option>
+<option>ICT</option>
+</select>
+
+<input id="question" placeholder="Enter question">
+
+<input id="optA" placeholder="Option A">
+<input id="optB" placeholder="Option B">
+<input id="optC" placeholder="Option C">
+<input id="optD" placeholder="Option D">
+
+<label>Correct Answer</label>
+<select id="correct">
+<option value="A">Option A</option>
+<option value="B">Option B</option>
+<option value="C">Option C</option>
+<option value="D">Option D</option>
+</select>
+
+<button onclick="saveQuestion()">Save Question</button>
+<p id="saveMsg"></p>
 </div>
+
 <button onclick="goHome()">Logout</button>
 </div>
 
