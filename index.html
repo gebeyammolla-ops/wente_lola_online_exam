@@ -503,7 +503,7 @@ html+="<hr>";
 document.getElementById("myQuestions").innerHTML=html;
 
 }
-  function editQuestion(index){
+  window.editQuestion = function(index){
     alert("EDIT FUNCTION REACHED!");
 
 let allQuestions=JSON.parse(localStorage.getItem("questions")||"[]");
@@ -529,7 +529,7 @@ editingQuestionIndex=index;
 document.getElementById("saveMsg").innerText=
 "Edit the question and click Update Question.";
 
-}
+};
 
 function deleteQuestion(index){
 
