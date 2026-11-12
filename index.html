@@ -507,10 +507,13 @@ let results=JSON.parse(localStorage.getItem("examResults")||"[]");
 let grade=document.getElementById("teacherFilterGrade").value;
 let subject=document.getElementById("teacherFilterSubject").value;
 
-let filtered=results.filter(r=>
-(grade==="All"||r.grade===grade)&&
-(subject==="All"||r.subject===subject)
-);
+
+let filtered=results.filter(r=>{
+let gradeMatch=grade==="All"||r.grade===grade;
+let subjectMatch=subject==="All"||r.subject===subject;
+return gradeMatch&&subjectMatch;
+});
+
 
 let html="<h3>Filtered Student Results</h3>";
 
