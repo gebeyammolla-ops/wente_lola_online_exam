@@ -103,7 +103,14 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 <div id="teacherList"></div>
   
 
-<h3>Manage Students</h3><label>Student Username</label><input id="studentUsername" placeholder="Enter username"><label>Student Password</label><input id="studentPassword" type="password" placeholder="Enter password"><label>Student Grade</label><select id="studentRegGrade"><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select><button onclick="addStudent()">Register Student</button><p id="studentMsg"></p><div id="studentList"></div>
+<h3>Manage Students</h3><label>Student Username</label>
+  <input id="studentUsername" placeholder="Enter username">
+  <label>Student Password</label><input id="studentPassword" 
+   type="password" placeholder="Enter password">
+  <label>Student Grade</label><select id="studentRegGrade">
+  <option>Grade 9</option><option>Grade 10</option><option>Grade 11</option>
+    <option>Grade 12</option></select><button onclick="addStudent()">Register Student</button>
+  <p id="studentMsg"></p><div id="studentList"></div>
 
 </div>
   
@@ -322,7 +329,17 @@ let u=document.getElementById("username").value.trim();
   currentUser=u;
 let p=document.getElementById("password").value;
   
-if(role==="Student"){let students=JSON.parse(localStorage.getItem("students")||"[]");let validStudent=students.find(s=>s.username===u&&s.password===p);if(!validStudent){document.getElementById("msg").innerText="Invalid Student Username or Password";return;}currentUser=validStudent.username;}
+if(role==="Student"){
+  let students=JSON.parse(localStorage.getItem("students")||"[]");
+  let validStudent=students.find(s=>s.username===u&&s.password===p);
+  if(!validStudent){
+  document.getElementById("msg").innerText="Invalid Student Username or Password";
+  return;
+  }
+  currentUser=validStudent.username;
+  document.getElementById("studentGrade").value=validStudent.grade;
+document.getElementById("studentGrade").disabled=true;
+}
 
   if(role==="Teacher"){
 
@@ -418,11 +435,7 @@ html+=`<label><input type="radio" name="exam${i}" value="C"> ${q.C}</label><br>`
 html+=`<label><input type="radio" name="exam${i}" value="D"> ${q.D}</label><br>`;
 });
 
-document.getElementById("examQuestions").innerHTML=
-selected.length?html:"No questions available!"
-
-  document.getElementById("examQuestions").innerHTML=
-selected.length?html:"No questions available!";
+document.getElementById("examQuestions").innerHTML=selected.length?html:"No questions available!";
 
 startTimer();
 }
