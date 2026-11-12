@@ -265,7 +265,43 @@ submitRealExam();
 }
 },1000);
 }
+function showResults(){
 
+let results=JSON.parse(localStorage.getItem("examResults")||"[]");
+
+let html="<h3>Student Results</h3>";
+
+if(results.length===0){
+
+html+="<p>No results yet</p>";
+
+}else{
+
+html+="<table border='1'>";
+
+html+="<tr><th>Student</th><th>Grade</th><th>Subject</th><th>Score</th><th>Date</th></tr>";
+
+results.forEach(r=>{
+
+html+="<tr>";
+
+html+="<td>"+r.student+"</td>";
+html+="<td>"+r.grade+"</td>";
+html+="<td>"+r.subject+"</td>";
+html+="<td>"+r.score+"/"+r.total+"</td>";
+html+="<td>"+r.date+"</td>";
+
+html+="</tr>";
+
+});
+
+html+="</table>";
+
+}
+
+document.getElementById("resultsList").innerHTML=html;
+
+}
 
 </script>
 </body>
