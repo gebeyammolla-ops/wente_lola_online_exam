@@ -238,8 +238,12 @@ let examTime = 60 * 60;
 let timerInterval;
 
 function startTimer(){
+
 clearInterval(timerInterval);
 examTime = 60 * 60;
+
+document.getElementById("timer").innerText = "Time Left: 60:00";
+
 
 timerInterval = setInterval(function(){
 let minutes = Math.floor(examTime / 60);
