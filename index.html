@@ -795,30 +795,42 @@ document.querySelectorAll('#examQuestions input').forEach(input=>input.disabled=
 let examTime = 60 * 60;
 let timerInterval;
 
+
 function startTimer(){
 
 clearInterval(timerInterval);
-examTime = 60 * 60;
 
-document.getElementById("timer").innerText = "Time Left: 60:00";
+let settings=JSON.parse(localStorage.getItem("examSettings")||"{}");
 
+let duration=parseInt(settings.duration)||60;
 
-timerInterval = setInterval(function(){
-let minutes = Math.floor(examTime / 60);
-let seconds = examTime % 60;
+examTime=duration*60;
 
-document.getElementById("timer").innerText =
-"Time Left: " +
-minutes + ":" + String(seconds).padStart(2,"0");
+document.getElementById("timer").innerText=
+"Time Left: "+duration+":00";
+
+timerInterval=setInterval(function(){
+
+let minutes=Math.floor(examTime/60);
+let seconds=examTime%60;
+
+document.getElementById("timer").innerText=
+"Time Left: "+minutes+":"+String(seconds).padStart(2,"0");
 
 examTime--;
 
-if(examTime < 0){
+if(examTime<0){
+
 clearInterval(timerInterval);
+
 submitRealExam();
+
 }
+
 },1000);
+
 }
+
 function showResults(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
