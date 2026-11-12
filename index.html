@@ -236,6 +236,63 @@ showTeachers();
 
 }
   
+function addStudent(){
+  let username=document.getElementById("studentUsername").value.trim();
+  let password=document.getElementById("studentPassword").value;
+  let grade=document.getElementById("studentRegGrade").value;
+
+  if(!username||!password){
+    alert("Enter student username and password");
+    return;
+  }
+
+  let students=JSON.parse(localStorage.getItem("students")||"[]");
+
+  students.push({
+    username:username,
+    password:password,
+    grade:grade
+  });
+
+  localStorage.setItem("students",JSON.stringify(students));
+
+  document.getElementById("studentMsg").innerText="Student Registered Successfully!";
+  document.getElementById("studentUsername").value="";
+  document.getElementById("studentPassword").value="";
+
+  showStudents();
+}
+
+function showStudents(){
+  let students=JSON.parse(localStorage.getItem("students")||"[]");
+  let html="<h4>Registered Students</h4>";
+
+  html+="<table border='1'>";
+  html+="<tr><th>Username</th><th>Grade</th><th>Action</th></tr>";
+
+  students.forEach((s,i)=>{
+    html+="<tr>";
+    html+="<td>"+s.username+"</td>";
+    html+="<td>"+s.grade+"</td>";
+    html+="<td><button onclick='deleteStudent("+i+")'>Delete</button></td>";
+    html+="</tr>";
+  });
+
+  html+="</table>";
+  document.getElementById("studentList").innerHTML=html;
+}
+
+function deleteStudent(index){
+  let students=JSON.parse(localStorage.getItem("students")||"[]");
+
+  if(confirm("Delete this student?")){
+    students.splice(index,1);
+    localStorage.setItem("students",JSON.stringify(students));
+    showStudents();
+  }
+}
+
+  
 function updateAdminDashboard(){
 
 let questions=JSON.parse(localStorage.getItem("questions")||"[]");
