@@ -1031,13 +1031,16 @@ document.getElementById("settingsMsg").innerText=
 "Exam settings saved successfully!";
 
 }
-  
-function editQuestion(index){
-  alert("Edit button is working!");
+  window.editQuestion = function(index){
 
 let allQuestions=JSON.parse(localStorage.getItem("questions")||"[]");
 
 let q=allQuestions[index];
+
+if(!q){
+alert("Question not found!");
+return;
+}
 
 document.getElementById("qGrade").value=q.grade;
 document.getElementById("qSubject").value=q.subject;
@@ -1053,7 +1056,7 @@ editingQuestionIndex=index;
 document.getElementById("saveMsg").innerText=
 "Edit the question and click Update Question.";
 
-}
+};
 
 function updateQuestion(){
 
