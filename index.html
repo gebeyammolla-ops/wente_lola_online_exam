@@ -73,7 +73,23 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 <p id="studentResult"></p>
 </div>
 
+<div id="adminArea" class="hidden">
 
+<h2>Admin Dashboard</h2>
+
+<p id="totalStudents">Total Students: 0</p>
+
+<p id="totalTeachers">Total Teachers: 0</p>
+
+<p id="totalQuestions">Total Questions: 0</p>
+
+<p id="totalExams">Total Exams: 0</p>
+
+<button onclick="showResults()">View All Results</button>
+
+<div id="adminResults"></div>
+
+</div>
   
 
 <div id="staffArea" class="hidden">
@@ -140,6 +156,25 @@ document.getElementById("home").classList.add("hidden");
 document.getElementById("login").classList.remove("hidden");
 document.getElementById("loginTitle").innerText=r+" Login";
 }
+function updateAdminDashboard(){
+
+let questions=JSON.parse(localStorage.getItem("questions")||"[]");
+let results=JSON.parse(localStorage.getItem("examResults")||"[]");
+
+document.getElementById("totalStudents").innerText=
+"Total Students: "+new Set(results.map(r=>r.student)).size;
+
+document.getElementById("totalTeachers").innerText=
+"Total Teachers: 0";
+
+document.getElementById("totalQuestions").innerText=
+"Total Questions: "+questions.length;
+
+document.getElementById("totalExams").innerText=
+"Total Exams: "+results.length;
+
+}
+  
 function login(){
 let u=document.getElementById("username").value.trim();
   currentUser=u;
@@ -148,7 +183,17 @@ if(!u||!p){document.getElementById("msg").innerText="Enter username and password
 document.getElementById("login").classList.add("hidden");
 document.getElementById("dashboard").classList.remove("hidden");
 document.getElementById("dashTitle").innerText=role+" Dashboard";
+  if(role==="Admin"){
+updateAdminDashboard();
+}
 document.getElementById("welcome").innerText="Welcome "+u;
+  if(role==="Admin"){
+document.getElementById("adminArea").classList.remove("hidden");
+}else if(role==="Student"){
+document.getElementById("studentArea").classList.remove("hidden");
+}else{
+document.getElementById("staffArea").classList.remove("hidden");
+}
 if(role==="Student"){
 document.getElementById("studentArea").classList.remove("hidden");
 }else{
