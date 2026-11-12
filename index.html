@@ -1052,6 +1052,44 @@ document.getElementById("saveMsg").innerText=
 
 }
 
+function updateQuestion(){
+
+if(editingQuestionIndex===undefined || editingQuestionIndex===-1){
+alert("Please select a question to edit!");
+return;
+}
+
+let allQuestions=JSON.parse(localStorage.getItem("questions")||"[]");
+
+let q={
+grade:document.getElementById("qGrade").value,
+subject:document.getElementById("qSubject").value,
+question:document.getElementById("question").value,
+A:document.getElementById("optA").value,
+B:document.getElementById("optB").value,
+C:document.getElementById("optC").value,
+D:document.getElementById("optD").value,
+correct:document.getElementById("correct").value
+};
+
+if(!q.question || !q.A || !q.B || !q.C || !q.D){
+alert("Please fill all fields!");
+return;
+}
+
+allQuestions[editingQuestionIndex]=q;
+
+localStorage.setItem("questions",JSON.stringify(allQuestions));
+
+editingQuestionIndex=-1;
+
+document.getElementById("saveMsg").innerText=
+"Question updated successfully!";
+
+showMyQuestions();
+
+}
+
 </script>
 </body>
 </html>
