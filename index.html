@@ -453,6 +453,7 @@ localStorage.setItem("questions",JSON.stringify(questions));
 document.getElementById("saveMsg").innerText="Question saved successfully!";
 }
 
+
 function showMyQuestions(){
 
 let allQuestions=JSON.parse(localStorage.getItem("questions")||"[]");
@@ -460,7 +461,9 @@ let allQuestions=JSON.parse(localStorage.getItem("questions")||"[]");
 let html="<h3>My Questions</h3>";
 
 if(allQuestions.length===0){
+
 html+="<p>No questions available!</p>";
+
 }else{
 
 allQuestions.forEach((q,i)=>{
@@ -468,7 +471,9 @@ allQuestions.forEach((q,i)=>{
 html+=`<p><b>${i+1}. ${q.question}</b><br>`;
 html+=`Grade: ${q.grade}<br>`;
 html+=`Subject: ${q.subject}<br>`;
-html+=`Correct Answer: ${q.correct}</p>`;
+html+=`Correct Answer: ${q.correct}<br>`;
+
+html+=`<button onclick="deleteQuestion(${i})">Delete Question</button></p>`;
 html+="<hr>";
 
 });
@@ -478,6 +483,7 @@ html+="<hr>";
 document.getElementById("myQuestions").innerHTML=html;
 
 }
+
 
 function showTeacherResults(){
 
