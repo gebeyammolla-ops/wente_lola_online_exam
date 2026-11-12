@@ -442,12 +442,30 @@ startTimer();
 
 
 function submitRealExam(){
+
 let questions=JSON.parse(localStorage.getItem("questions")||"[]");
 
 let grade=document.getElementById("studentGrade").value;
 let subject=document.getElementById("studentSubject").value;
 
 let selected=questions.filter(q=>q.grade===grade&&q.subject===subject);
+
+let student=currentUser;
+
+let submitted=JSON.parse(localStorage.getItem("submittedExams")||"[]");
+
+let alreadySubmitted=submitted.some(e=>e.student===student&&e.grade===grade&&e.subject===subject);
+
+if(alreadySubmitted){
+document.getElementById("studentResult").innerText="You have already submitted this exam!";
+return;
+}
+
+if(selected.length===0){
+document.getElementById("studentResult").innerText="No questions available!";
+return;
+}
+
 let score=0;
 
 selected.forEach((q,i)=>{
@@ -455,10 +473,16 @@ let answer=document.querySelector('input[name="exam'+i+'"]:checked');
 if(answer&&answer.value===q.correct)score++;
 });
 
-document.getElementById("studentResult").innerText=
-"Your Score: "+score+"/"+selected.length;
+document.getElementById("studentResult").innerText="Your Score: "+score+"/"+selected.length;
 
 saveExamResult(grade,subject,score,selected.length);
+
+submitted.push({student:student,grade:grade,subject:subject});
+
+localStorage.setItem("submittedExams",JSON.stringify(submitted));
+
+document.querySelectorAll('#examQuestions input').forEach(input=>input.disabled=true);
+
 }
 
 
