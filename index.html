@@ -117,6 +117,24 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
   
 
 <div id="staffArea" class="hidden">
+  <h3>Exam Settings</h3>
+
+<label>Exam Duration (Minutes)</label>
+<input id="examDuration" type="number" value="60">
+
+<label>Pass Mark (%)</label>
+<input id="passMark" type="number" value="50">
+
+<label>Exam Instructions</label>
+<textarea id="examInstructions">
+Read all questions carefully.
+Choose the correct answer.
+Submit your exam before time expires.
+</textarea>
+
+<button onclick="saveExamSettings()">Save Exam Settings</button>
+
+<p id="settingsMsg"></p>
 <h3>Question Management</h3>
 
 <label>Grade</label>
