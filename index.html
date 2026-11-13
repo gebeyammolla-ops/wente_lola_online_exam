@@ -450,12 +450,13 @@ function updateAdminDashboard(){
 
 let questions=JSON.parse(localStorage.getItem("questions")||"[]");
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
+let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
 
 document.getElementById("totalStudents").innerText=
 "Total Students: "+new Set(results.map(r=>r.student)).size;
 
 document.getElementById("totalTeachers").innerText=
-"Total Teachers: 0";
+"Total Teachers: "+teachers.length;
 
 document.getElementById("totalQuestions").innerText=
 "Total Questions: "+questions.length;
@@ -464,6 +465,7 @@ document.getElementById("totalExams").innerText=
 "Total Exams: "+results.length;
 
 }
+
   
 function resetAdminPassword(){
 
