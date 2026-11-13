@@ -1126,20 +1126,20 @@ html+="<p>No results yet</p>";
 
 }else{
 
+html+="<br><button onclick='deleteSelectedResults()'>Delete Selected</button>";
+
 html+="<table border='1'>";
+html+="<tr><th>Select</th><th>Student</th><th>Grade</th><th>Subject</th><th>Score</th><th>Date</th></tr>";
 
-html+="<tr><th>Student</th><th>Grade</th><th>Subject</th><th>Score</th><th>Date</th></tr>";
-
-results.forEach(r=>{
+results.forEach((r,i)=>{
 
 html+="<tr>";
-
+html+="<td><input type='checkbox' class='resultCheck' value='"+i+"'></td>";
 html+="<td>"+r.student+"</td>";
 html+="<td>"+r.grade+"</td>";
 html+="<td>"+r.subject+"</td>";
 html+="<td>"+r.score+"/"+r.total+"</td>";
 html+="<td>"+r.date+"</td>";
-
 html+="</tr>";
 
 });
@@ -1147,11 +1147,14 @@ html+="</tr>";
 html+="</table>";
 
 }
+
 html+="<br><button onclick='window.print()'>Print Results</button>";
-  html+="<br><button onclick='exportResults()'>Export Results to Excel</button>";
+html+="<br><button onclick='exportResults()'>Export Results to Excel</button>";
+
 document.getElementById("resultsList").innerHTML=html;
 
 }
+
 function exportResults(){
 
 let rows=document.querySelectorAll("#resultsList table tr");
@@ -1221,6 +1224,48 @@ rows[i].style.display="none";
 }
 
 }
+  
+function deleteSelectedResults(){
+
+let checks=document.querySelectorAll(".resultCheck:checked");
+
+if(checks.length===0){
+alert("Please select at least one result to delete.");
+return;
+}
+
+if(!confirm("Are you sure you want to delete the selected results?")){
+return;
+}
+
+let results=JSON.parse(localStorage.getItem("examResults")||"[]");
+
+let indexes=Array.from(checks).map(c=>Number(c.value));
+
+let deletedResults=indexes.map(i=>results[i]);
+
+results=results.filter((r,i)=>!indexes.includes(i));
+
+localStorage.setItem("examResults",JSON.stringify(results));
+
+let submitted=JSON.parse(localStorage.getItem("submittedExams")||"[]");
+
+submitted=submitted.filter(s=>
+!deletedResults.some(r=>
+r.student===s.student&&
+r.grade===s.grade&&
+r.subject===s.subject
+)
+);
+
+localStorage.setItem("submittedExams",JSON.stringify(submitted));
+
+alert("Selected results deleted successfully!");
+
+showResults();
+
+}
+
 
 function saveExamResult(grade, subject, score, total){
 
