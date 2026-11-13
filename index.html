@@ -82,6 +82,10 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 <input type="password" id="newAdminPassword" placeholder="Enter new password">
 
 <button onclick="changeAdminPassword()">Change Password</button>
+  
+<button onclick="resetAdminPassword()">Reset Admin Password</button>
+<p id="resetAdminMsg"></p>
+
 
 <p id="adminPasswordMsg"></p>
 
@@ -390,6 +394,16 @@ document.getElementById("totalExams").innerText=
 "Total Exams: "+results.length;
 
 }
+  
+function resetAdminPassword(){
+
+localStorage.removeItem("adminPassword");
+
+document.getElementById("resetAdminMsg").innerText=
+"Admin Password reset successfully! Default password is 1234.";
+
+}
+
   
 function changeAdminPassword(){
 
