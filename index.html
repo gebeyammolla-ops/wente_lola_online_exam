@@ -75,6 +75,16 @@ button{background:#123b70;color:white;border:0;border-radius:6px}
 </div>
 
 <div id="adminArea" class="hidden">
+  
+<h3>Change Admin Password</h3>
+
+<label>New Admin Password</label>
+<input type="password" id="newAdminPassword" placeholder="Enter new password">
+
+<button onclick="changeAdminPassword()">Change Password</button>
+
+<p id="adminPasswordMsg"></p>
+
 
 <h2>Admin Dashboard</h2>
 
@@ -381,6 +391,23 @@ document.getElementById("totalExams").innerText=
 
 }
   
+function changeAdminPassword(){
+
+let newPassword=document.getElementById("newAdminPassword").value;
+
+if(newPassword.length<4){
+document.getElementById("adminPasswordMsg").innerText="Password must be at least 4 characters!";
+return;
+}
+
+localStorage.setItem("adminPassword",newPassword);
+
+document.getElementById("adminPasswordMsg").innerText="Admin Password changed successfully!";
+
+document.getElementById("newAdminPassword").value="";
+
+}
+
 function login(){
 let u=document.getElementById("username").value.trim();
   currentUser=u;
