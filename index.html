@@ -98,6 +98,15 @@ padding:0 !important;
 <p id="timer" style="font-size:20px;color:red;font-weight:bold;"></p>
 
 <div id="examQuestions"></div>
+  
+<button id="prevQuestionBtn" onclick="previousQuestion()" style="display:none">
+Previous Question
+</button>
+
+<button id="nextQuestionBtn" onclick="nextQuestion()" style="display:none">
+Next Question
+</button>
+
 <button onclick="submitRealExam()">Submit Exam</button>
 <p id="studentResult"></p>
 </div>
@@ -272,9 +281,13 @@ Submit your exam before time expires.
 <p id="result"></p>
 </div>
 
+<script>
+let currentExamQuestions = [];
+let currentQuestionIndex = 0;
+let examAnswers = {};
 
   
-<script>
+
   let editingQuestionIndex = -1;
 let role="";
 function showLogin(r){
@@ -827,22 +840,18 @@ document.getElementById("teacherStatistics").innerHTML=html;
 
 }
 
+
 function loadExam(){
+
 let grade=document.getElementById("studentGrade").value;
 let subject=document.getElementById("studentSubject").value;
 
 let questions=JSON.parse(localStorage.getItem("questions")||"[]");
 
-let selected=questions.filter(q=>q.grade===grade&&q.subject===subject);
+currentExamQuestions=questions.filter(q=>q.grade===grade&&q.subject===subject);
 
-let html="";
-
-selected.forEach((q,i)=>{
-html+=`<label><input type="radio" name="exam${i}" value="A" style="width:auto"> A. ${q.A}</label><br>`;
-html+=`<label><input type="radio" name="exam${i}" value="B" style="width:auto"> B. ${q.B}</label><br>`;
-html+=`<label><input type="radio" name="exam${i}" value="C" style="width:auto"> C. ${q.C}</label><br>`;
-html+=`<label><input type="radio" name="exam${i}" value="D" style="width:auto"> D. ${q.D}</label><br>`;
-});
+currentQuestionIndex=0;
+examAnswers={};
 
 let settings=JSON.parse(localStorage.getItem("examSettings")||"{}");
 
@@ -850,11 +859,74 @@ let instructions=settings.instructions||
 "Read all questions carefully. Choose the correct answer.";
 
 document.getElementById("examQuestions").innerHTML=
-"<h3>Exam Instructions</h3><p>"+instructions+"</p>"+
-(selected.length?html:"No questions available!");
+"<h3>Exam Instructions</h3><p>"+instructions+"</p>";
+
+if(currentExamQuestions.length===0){
+document.getElementById("examQuestions").innerHTML="No questions available!";
+return;
+}
+
+document.getElementById("prevQuestionBtn").style.display="inline-block";
+document.getElementById("nextQuestionBtn").style.display="inline-block";
 
 startTimer();
+
+showCurrentQuestion();
 }
+
+
+function showCurrentQuestion(){
+
+let q=currentExamQuestions[currentQuestionIndex];
+
+let html="<h3>Question "+(currentQuestionIndex+1)+
+"/"+currentExamQuestions.length+"</h3>";
+
+html+="<p><b>"+q.question+"</b></p>";
+
+["A","B","C","D"].forEach(option=>{
+
+let checked=examAnswers[currentQuestionIndex]===option?"checked":"";
+
+html+=`<label>
+<input type="radio" name="currentAnswer" value="${option}" ${checked}
+onchange="examAnswers[currentQuestionIndex]=this.value"
+style="width:auto">
+${option}. ${q[option]}
+</label><br>`;
+
+});
+
+document.getElementById("examQuestions").innerHTML=html;
+
+document.getElementById("prevQuestionBtn").disabled=
+currentQuestionIndex===0;
+
+document.getElementById("nextQuestionBtn").disabled=
+currentQuestionIndex===currentExamQuestions.length-1;
+
+}
+
+
+function previousQuestion(){
+
+if(currentQuestionIndex>0){
+currentQuestionIndex--;
+showCurrentQuestion();
+}
+
+}
+
+
+function nextQuestion(){
+
+if(currentQuestionIndex<currentExamQuestions.length-1){
+currentQuestionIndex++;
+showCurrentQuestion();
+}
+
+}
+
 
 
 function submitRealExam(){
