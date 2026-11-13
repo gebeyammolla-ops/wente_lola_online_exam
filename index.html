@@ -491,8 +491,12 @@ html+="<p>"+subject+": "+subjectCounts[subject]+"</p>";
 
 document.getElementById("questionsBySubject").innerHTML=html;
 
+let uniqueExams=new Set(
+results.map(r=>r.grade+"-"+r.subject)
+);
+
 document.getElementById("totalExams").innerText=
-"Total Exams: "+results.length;
+"Total Exams: "+uniqueExams.size;
 
 }
 
