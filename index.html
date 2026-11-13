@@ -450,7 +450,9 @@ location.reload();
   
 let questions = JSON.parse(localStorage.getItem("questions") || "[]");
 
+
 function saveQuestion(){
+
 let q = {
 grade: document.getElementById("qGrade").value,
 subject: document.getElementById("qSubject").value,
@@ -468,10 +470,20 @@ return;
 }
 
 questions.push(q);
+
 localStorage.setItem("questions",JSON.stringify(questions));
 
-document.getElementById("saveMsg").innerText="Question saved successfully!";
+document.getElementById("question").value="";
+document.getElementById("optA").value="";
+document.getElementById("optB").value="";
+document.getElementById("optC").value="";
+document.getElementById("optD").value="";
+document.getElementById("correct").value="A";
+
+document.getElementById("saveMsg").innerText="Question saved successfully! Enter the next question.";
+
 }
+
 
 
 function showMyQuestions(){
