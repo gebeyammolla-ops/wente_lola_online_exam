@@ -906,6 +906,11 @@ currentQuestionIndex===0;
 
 document.getElementById("nextQuestionBtn").disabled=
 currentQuestionIndex===currentExamQuestions.length-1;
+  
+document.getElementById("submitExamBtn").style.display=
+currentQuestionIndex===currentExamQuestions.length-1?
+"inline-block":"none";
+
 
 }
 
