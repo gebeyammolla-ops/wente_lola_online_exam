@@ -24,7 +24,12 @@
 body{font-family:Arial;background:#eef2f7;margin:0}
 header{background:#123b70;color:white;text-align:center;padding:20px}
 .box{background:white;padding:22px;margin:20px auto;max-width:450px;border-radius:12px;box-shadow:0 2px 8px #bbb}
-input,select,button{width:100%;padding:12px;margin:8px 0;box-sizing:border-box}
+input:not([type="radio"]),select,button{
+width:100%;
+padding:12px;
+margin:8px 0;
+box-sizing:border-box
+}
 button{background:#123b70;color:white;border:0;border-radius:6px}
 .hidden{display:none}
 </style>
@@ -826,10 +831,10 @@ let selected=questions.filter(q=>q.grade===grade&&q.subject===subject);
 let html="";
 
 selected.forEach((q,i)=>{
-html+=`<label><input type="radio" name="exam${i}" value="A"> A. ${q.A}</label><br>`;
-html+=`<label><input type="radio" name="exam${i}" value="B"> B. ${q.B}</label><br>`;
-html+=`<label><input type="radio" name="exam${i}" value="C"> C. ${q.C}</label><br>`;
-html+=`<label><input type="radio" name="exam${i}" value="D"> D. ${q.D}</label><br>`;
+html+=`<label><input type="radio" name="exam${i}" value="A" style="width:auto"> A. ${q.A}</label><br>`;
+html+=`<label><input type="radio" name="exam${i}" value="B" style="width:auto"> B. ${q.B}</label><br>`;
+html+=`<label><input type="radio" name="exam${i}" value="C" style="width:auto"> C. ${q.C}</label><br>`;
+html+=`<label><input type="radio" name="exam${i}" value="D" style="width:auto"> D. ${q.D}</label><br>`;
 });
 
 let settings=JSON.parse(localStorage.getItem("examSettings")||"{}");
