@@ -470,6 +470,26 @@ document.getElementById("totalTeachers").innerText=
 
 document.getElementById("totalQuestions").innerText=
 "Total Questions: "+questions.length;
+  let subjects=[...new Set(questions.map(q=>q.subject))];
+
+document.getElementById("totalSubjects").innerText=
+"Total Subjects: "+subjects.length;
+
+let subjectCounts={};
+
+questions.forEach(q=>{
+let key=q.grade+" - "+q.subject;
+
+subjectCounts[key]=(subjectCounts[key]||0)+1;
+});
+
+let html="<h3>Questions by Subject</h3>";
+
+for(let subject in subjectCounts){
+html+="<p>"+subject+": "+subjectCounts[subject]+"</p>";
+}
+
+document.getElementById("questionsBySubject").innerHTML=html;
 
 document.getElementById("totalExams").innerText=
 "Total Exams: "+results.length;
