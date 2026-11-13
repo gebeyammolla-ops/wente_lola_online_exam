@@ -826,11 +826,11 @@ let selected=questions.filter(q=>q.grade===grade&&q.subject===subject);
 let html="";
 
 selected.forEach((q,i)=>{
-html+=`<p><b>${i+1}. ${q.question}</b></p>`;
-html+=`<label><input type="radio" name="exam${i}" value="A"> ${q.A}</label><br>`;
-html+=`<label><input type="radio" name="exam${i}" value="B"> ${q.B}</label><br>`;
-html+=`<label><input type="radio" name="exam${i}" value="C"> ${q.C}</label><br>`;
-html+=`<label><input type="radio" name="exam${i}" value="D"> ${q.D}</label><br>`;
+
+html+=`<label><input type="radio" name="exam${i}" value="A"> A. ${q.A}</label><br>`;
+html+=`<label><input type="radio" name="exam${i}" value="B"> B. ${q.B}</label><br>`;
+html+=`<label><input type="radio" name="exam${i}" value="C"> C. ${q.C}</label><br>`;
+html+=`<label><input type="radio" name="exam${i}" value="D"> D. ${q.D}</label><br>`;
 });
 
 let settings=JSON.parse(localStorage.getItem("examSettings")||"{}");
