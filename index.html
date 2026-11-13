@@ -442,7 +442,9 @@ return;
 }
   if(role==="Admin"){
 
-if(u!=="admin" || p!=="1234"){
+
+if(u!=="admin" || p!==(localStorage.getItem("adminPassword")||"1234")){
+
 
 document.getElementById("msg").innerText="Invalid Admin Username or Password";
 
