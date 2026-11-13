@@ -413,6 +413,17 @@ return;
 }
 
 }
+  if(role==="Admin"){
+
+if(u!=="admin" || p!=="1234"){
+
+document.getElementById("msg").innerText="Invalid Admin Username or Password";
+
+return;
+
+}
+
+}
 if(!u||!p){document.getElementById("msg").innerText="Enter username and password";return;}
 document.getElementById("login").classList.add("hidden");
 document.getElementById("dashboard").classList.remove("hidden");
