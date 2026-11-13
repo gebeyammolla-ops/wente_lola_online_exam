@@ -38,6 +38,24 @@ width:20px !important;
 height:20px !important;
 margin-right:10px !important;
 padding:0 !important;
+    
+#prevQuestionBtn,
+#nextQuestionBtn{
+background:#1976d2;
+color:white;
+border:none;
+padding:10px 25px;
+border-radius:6px;
+cursor:pointer;
+}
+
+#prevQuestionBtn:disabled,
+#nextQuestionBtn:disabled{
+background:#bdbdbd;
+color:#666;
+cursor:not-allowed;
+}
+
 }
 </style>
 </head>
@@ -937,8 +955,6 @@ showCurrentQuestion();
 }
 
 }
-
-
 
 
 function submitRealExam(){
