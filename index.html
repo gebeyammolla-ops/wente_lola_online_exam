@@ -381,7 +381,7 @@ Next ➡
 <p id="totalStudents" onclick="showRegisteredStudents()" style="cursor:pointer;font-size:20px;font-weight:bold;color:#1565c0">0</p>
 </div>
 
-<div style="background:#e8f5e9;padding:18px;border-radius:12px;text-align:center">
+<div id="questionManagement" class="hidden" style="background:#e8f5e9;padding:18px;border-radius:12px;margin-bottom:18px">text-align:center">
 <h3>👨‍🏫 Teachers</h3>
 <p id="totalTeachers" onclick="showRegisteredTeachers()" style="cursor:pointer;font-size:20px;font-weight:bold;color:#2e7d32">0</p>
 </div>
@@ -505,7 +505,9 @@ Submit your exam before time expires.</textarea>
 
 <!-- Question Management -->
 <div style="background:#e8f5e9;padding:18px;border-radius:12px;margin-bottom:18px">
-
+<button onclick="document.getElementById('questionManagement').classList.toggle('hidden')">
+📝 Question Management
+</button>
 <h3>📝 Question Management</h3>
 
 <label>Grade</label>
