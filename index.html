@@ -1060,11 +1060,13 @@ let oldResults=JSON.parse(localStorage.getItem("examResults")||"[]");
 let oldResult=oldResults.find(e=>
 e.student===student&&e.grade===grade&&e.subject===subject
 );
-
 if(oldResult){
 document.getElementById("studentResult").innerText=
-"Your Score: "+oldResult.score+"/"+oldResult.total;
-}else{
+"Your Score: "+oldResult.score+"/"+oldResult.total+
+" ("+(oldResult.percentage||0).toFixed(1)+"%) - "+
+(oldResult.status||"Not Recorded");
+}
+else{
 document.getElementById("studentResult").innerText=
 "You have already submitted this exam. Old result details are unavailable.";
 }
