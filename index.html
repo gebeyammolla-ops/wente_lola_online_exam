@@ -166,7 +166,12 @@ Total Students: 0 (Click to View)
   
 <p id="totalParticipants">totalParticipants: 0/p>
 
-<p id="totalTeachers">Total Teachers: 0</p>
+<p id="totalTeachers"
+onclick="showRegisteredTeachers()"
+style="cursor:pointer;color:blue">
+Total Teachers: 0 (Click to View)
+</p>
+<div id="teachersTable" style="display:none"></div>
 
 <p id="totalQuestions">Total Questions: 0</p>
 
@@ -337,6 +342,29 @@ role=r;
 document.getElementById("home").classList.add("hidden");
 document.getElementById("login").classList.remove("hidden");
 document.getElementById("loginTitle").innerText=r+" Login";
+}
+function showRegisteredTeachers(){
+
+let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
+
+let html="<h3>Registered Teachers List</h3>";
+
+html+="<table border='1' cellpadding='8'>";
+html+="<tr><th>No</th><th>Username</th></tr>";
+
+teachers.forEach((t,i)=>{
+html+=`<tr>
+<td>${i+1}</td>
+<td>${t.username}</td>
+</tr>`;
+});
+
+html+="</table>";
+
+let box=document.getElementById("teachersTable");
+box.innerHTML=html;
+box.style.display="block";
+
 }
 function addTeacher(){
 
