@@ -202,7 +202,7 @@ Total Teachers: 0 (Click to View)
 
 <p id="teacherMsg"></p>
 
-<div id="teacherList"></div>
+<div id="teacherList" style="display:none"></div>
   
 
 <h3>Student Registration</h3><label>Student Username</label>
@@ -425,7 +425,15 @@ html+="</tr>";
 
 html+="</table>";
 
-document.getElementById("teacherList").innerHTML=html;
+let box=document.getElementById("teacherList");
+
+if(box.style.display==="block"){
+box.style.display="none";
+return;
+}
+
+box.innerHTML=html;
+box.style.display="block";
 
 }
   function deleteTeacher(index){
