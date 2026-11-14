@@ -57,8 +57,10 @@ background:#bdbdbd;
 color:#666;
 cursor:not-allowed;
 }
-
 </style>
+
+
+  
 </head>
 <body>
 <header>
@@ -209,8 +211,8 @@ Submit Exam
 
 <label>Exam Instructions</label>
 <textarea id="examInstructions">
-Read all questions carefully.
-Choose the correct answer.
+Read all questions carefully.</br>
+Choose the correct answer.</br>
 Submit your exam before time expires.
 </textarea>
 
@@ -617,6 +619,7 @@ function saveQuestion(){
 let q = {
 grade: document.getElementById("qGrade").value,
 subject: document.getElementById("qSubject").value,
+teacher: currentUser,
 question: document.getElementById("question").value,
 A: document.getElementById("optA").value,
 B: document.getElementById("optB").value,
