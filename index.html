@@ -257,8 +257,10 @@ Submit your exam before time expires.
 </select>
 
 <button onclick="saveQuestion()">Save Question</button>
-  <button onclick="updateQuestion()">Update Question</button>
-  <button onclick="showMyQuestions()">My Questions</button>
+<button onclick="updateQuestion()">Update Question</button>
+<button onclick="showMyQuestions()">My Questions</button>
+<button onclick="showTeacherQuestionStatistics()">My Question Statistics</button>
+<div id="myQuestionStatistics"></div>
 <div id="myQuestions"></div>
 <p id="saveMsg"></p>
 
@@ -681,6 +683,32 @@ html+="<hr>";
 document.getElementById("myQuestions").innerHTML=html;
 
 }
+  
+function showTeacherQuestionStatistics(){
+
+let allQuestions=JSON.parse(localStorage.getItem("questions")||"[]");
+
+let myQuestions=allQuestions.filter(q=>q.teacher===currentUser);
+
+let html="<h3>My Question Statistics</h3>";
+
+html+="<p>Total My Questions: "+myQuestions.length+"</p>";
+
+let counts={};
+
+myQuestions.forEach(q=>{
+let key=q.grade+" - "+q.subject;
+counts[key]=(counts[key]||0)+1;
+});
+
+for(let key in counts){
+html+="<p>"+key+": "+counts[key]+" Questions</p>";
+}
+
+document.getElementById("myQuestionStatistics").innerHTML=html;
+
+}
+
 
   window.editQuestion = function(index){
 
