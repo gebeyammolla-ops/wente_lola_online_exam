@@ -360,8 +360,13 @@ html+=`<tr>
 });
 
 html+="</table>";
-
 let box=document.getElementById("teachersTable");
+
+if(box.style.display==="block"){
+box.style.display="none";
+return;
+}
+
 box.innerHTML=html;
 box.style.display="block";
 
@@ -477,8 +482,12 @@ html+=`<tr>
 });
 
 html+="</table>";
-
 let box=document.getElementById("registeredStudentsTable");
+
+if(box.style.display==="block"){
+box.style.display="none";
+return;
+}
 
 box.innerHTML=html;
 box.style.display="block";
