@@ -241,10 +241,16 @@ Submit Exam
 
 </div>
 
-  
-
 <div id="staffArea" class="hidden">
-  <h3>Exam Settings</h3>
+
+<h2 style="text-align:center;color:#1565c0">
+👨‍🏫 Teacher Dashboard
+</h2>
+
+<!-- Exam Settings -->
+<div style="background:#e3f2fd;padding:18px;border-radius:12px;margin-bottom:18px">
+
+<h3>⚙️ Exam Settings</h3>
 
 <label>Exam Duration (Minutes)</label>
 <input id="examDuration" type="number" value="60">
@@ -253,16 +259,19 @@ Submit Exam
 <input id="passMark" type="number" value="50">
 
 <label>Exam Instructions</label>
-<textarea id="examInstructions">
-Read all questions carefully.</br>
-Choose the correct answer.</br>
-Submit your exam before time expires.
-</textarea>
+<textarea id="examInstructions" rows="4">Read all questions carefully.
+Choose the correct answer.
+Submit your exam before time expires.</textarea>
 
 <button onclick="saveExamSettings()">Save Exam Settings</button>
-
 <p id="settingsMsg"></p>
-<h3>Question Management</h3>
+
+</div>
+
+<!-- Question Management -->
+<div style="background:#e8f5e9;padding:18px;border-radius:12px;margin-bottom:18px">
+
+<h3>📝 Question Management</h3>
 
 <label>Grade</label>
 <select id="qGrade">
@@ -274,7 +283,7 @@ Submit your exam before time expires.
 
 <label>Subject</label>
 <select id="qSubject">
-  <option>ICT</option>
+<option>ICT</option>
 <option>Mathematics</option>
 <option>English</option>
 <option>Physics</option>
@@ -284,11 +293,19 @@ Submit your exam before time expires.
 <option>History</option>
 </select>
 
+<label>Question</label>
 <input id="question" placeholder="Enter question">
 
+<label>Option A</label>
 <input id="optA" placeholder="Option A">
+
+<label>Option B</label>
 <input id="optB" placeholder="Option B">
+
+<label>Option C</label>
 <input id="optC" placeholder="Option C">
+
+<label>Option D</label>
 <input id="optD" placeholder="Option D">
 
 <label>Correct Answer</label>
@@ -299,17 +316,25 @@ Submit your exam before time expires.
 <option value="D">Option D</option>
 </select>
 
-<button onclick="saveQuestion()">Save Question</button>
-<button onclick="updateQuestion()">Update Question</button>
-<button onclick="showMyQuestions()">My Questions</button>
-<button onclick="showTeacherQuestionStatistics()">My Question Statistics</button>
+<button onclick="saveQuestion()">💾 Save Question</button>
+<button onclick="updateQuestion()">✏️ Update Question</button>
+<button onclick="showMyQuestions()">📚 My Questions</button>
+<button onclick="showTeacherQuestionStatistics()">📊 My Question Statistics</button>
+
 <div id="myQuestionStatistics"></div>
 <div id="myQuestions"></div>
 <p id="saveMsg"></p>
 
+</div>
+
+<!-- Results -->
+<div style="background:#fff3e0;padding:18px;border-radius:12px;margin-bottom:18px">
+
+<h3>📋 Student Examination Results</h3>
+
 <button onclick="showResults()">View Results</button>
 <div id="resultsList"></div>
-  
+
 <button onclick="showTeacherResults()">Student Results</button>
 <div id="teacherResults"></div>
 
@@ -325,7 +350,7 @@ Submit your exam before time expires.
 <label>Filter by Subject</label>
 <select id="teacherFilterSubject">
 <option value="All">All Subjects</option>
-  <option>ICT</option>
+<option>ICT</option>
 <option>Mathematics</option>
 <option>English</option>
 <option>Physics</option>
@@ -336,16 +361,23 @@ Submit your exam before time expires.
 </select>
 
 <button onclick="filterTeacherResults()">Apply Filter</button>
-
 <button onclick="exportTeacherResults()">Export Results to CSV</button>
-  
 <button onclick="printTeacherResults()">Print Results</button>
 
+</div>
+
+<!-- Statistics -->
+<div style="background:#f3e5f5;padding:18px;border-radius:12px">
+
+<h3>📈 Teacher Statistics</h3>
 
 <button onclick="showTeacherStatistics()">Teacher Statistics</button>
 <div id="teacherStatistics"></div>
 
 </div>
+
+</div>
+
 
 <button onclick="goHome()">Logout</button>
 </div>
