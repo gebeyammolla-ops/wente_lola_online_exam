@@ -635,7 +635,7 @@ if(!q.question || !q.A || !q.B || !q.C || !q.D){
 document.getElementById("saveMsg").innerText="Please fill all fields!";
 return;
 }
-
+console.log("Saved question teacher:",q.teacher,"Current user:",currentUser);
 questions.push(q);
 
 localStorage.setItem("questions",JSON.stringify(questions));
