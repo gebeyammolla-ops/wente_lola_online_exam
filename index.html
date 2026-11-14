@@ -1000,7 +1000,15 @@ ${option}. ${q[option]}
 
 });
 
-document.getElementById("examQuestions").innerHTML=html;
+
+let settings=JSON.parse(localStorage.getItem("examSettings")||"{}");
+
+let instructions=settings.instructions||
+"Read all questions carefully. Choose the correct answer.";
+
+document.getElementById("examQuestions").innerHTML=
+"<h3>Exam Instructions</h3><p>"+instructions+"</p>"+html;
+
 
 document.getElementById("prevQuestionBtn").disabled=
 currentQuestionIndex===0;
@@ -1011,8 +1019,6 @@ currentQuestionIndex===currentExamQuestions.length-1;
 document.getElementById("submitExamBtn").style.display=
 currentQuestionIndex===currentExamQuestions.length-1?
 "inline-block":"none";
-
-
 }
 
 
