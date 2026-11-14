@@ -156,7 +156,13 @@ Submit Exam
 
 <h2>Admin Dashboard</h2>
 
-<p id="totalStudents">Total Students: 0</p>
+<p id="totalStudents"
+onclick="showRegisteredStudents()"
+style="cursor:pointer;color:blue">
+Total Students: 0 (Click to View)
+</p>
+
+<div id="registeredStudentsTable" style="display:none"></div>
   
 <p id="totalParticipants">totalParticipants: 0/p>
 
