@@ -930,6 +930,7 @@ let validTeacher=teachers.find(t=>t.username===u && t.password===p);
 if(!validTeacher){
 
 document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
+  clearLoginMessage();
 
 return;
 
@@ -944,7 +945,7 @@ if(u!=="admin" || p!==(localStorage.getItem("adminPassword")||"1234")){
 
 
 document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
-
+clearLoginMessage();
 return;
 
 }
@@ -957,7 +958,7 @@ document.getElementById("dashTitle").innerText=role+" Dashboard";
   if(role==="Admin"){
 updateAdminDashboard();
 }
-document.getElementById("welcome").innerText="Welcome "+u;
+document.getElementById("welcome").innerText="Welcome "+u+"! Login successful.";
   if(role==="Admin"){
 document.getElementById("adminArea").classList.remove("hidden");
 }else if(role==="Student"){
