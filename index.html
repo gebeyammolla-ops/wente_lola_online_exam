@@ -894,12 +894,16 @@ function login(){
 let u=document.getElementById("username").value.trim();
   currentUser=u;
 let p=document.getElementById("password").value;
+  if(!u || !p){
+  document.getElementById("msg").innerText="Please enter username and password";
+  return;
+}
   
 if(role==="Student"){
   let students=JSON.parse(localStorage.getItem("students")||"[]");
   let validStudent=students.find(s=>s.username===u&&s.password===p);
   if(!validStudent){
-  document.getElementById("msg").innerText="Invalid Student Username or Password";
+  document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
   return;
   }
   currentUser=validStudent.username;
@@ -915,7 +919,7 @@ let validTeacher=teachers.find(t=>t.username===u && t.password===p);
 
 if(!validTeacher){
 
-document.getElementById("msg").innerText="Invalid Teacher Username or Password";
+document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
 
 return;
 
@@ -929,14 +933,13 @@ return;
 if(u!=="admin" || p!==(localStorage.getItem("adminPassword")||"1234")){
 
 
-document.getElementById("msg").innerText="Invalid Admin Username or Password";
+document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
 
 return;
 
 }
 
 }
-if(!u||!p){document.getElementById("msg").innerText="Enter username and password";return;}
 document.getElementById("login").classList.add("hidden");
 document.getElementById("dashboard").classList.remove("hidden");
 document.getElementById("dashTitle").innerText=role+" Dashboard";
