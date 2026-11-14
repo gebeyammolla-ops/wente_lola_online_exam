@@ -904,6 +904,7 @@ let u=document.getElementById("username").value.trim();
 let p=document.getElementById("password").value;
   if(!u || !p){
   document.getElementById("msg").innerText="Please enter username and password";
+    clearLoginMessage();
   return;
 }
   
@@ -912,6 +913,7 @@ if(role==="Student"){
   let validStudent=students.find(s=>s.username===u&&s.password===p);
   if(!validStudent){
   document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
+    clearLoginMessage();
   return;
   }
   currentUser=validStudent.username;
@@ -1902,6 +1904,11 @@ if(password.type==="password"){
   password.type="password";
 }
 
+}
+  function clearLoginMessage(){
+  setTimeout(function(){
+    document.getElementById("msg").innerText="";
+  }, 4000);
 }
 </script>
   <footer style="
