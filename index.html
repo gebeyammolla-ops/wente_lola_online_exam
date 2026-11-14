@@ -203,22 +203,52 @@ font-size:14px;
 alt="Wonte Lola Secondary School Banner"
 style="width:100%;height:auto;display:block;">
 </header>
-
-
 <div class="box" id="home">
-<h2>Select Login Type</h2>
-<button onclick="showLogin('Admin')">Admin Login</button>
-<button onclick="showLogin('Teacher')">Teacher Login</button>
-<button onclick="showLogin('Student')">Student Login</button>
+
+<h2>Welcome to Wonte Lola Secondary School</h2>
+
+<p>Select your account type to continue</p>
+
+<button onclick="showLogin('Admin')">
+👨‍💼 Admin Login
+</button>
+
+<button onclick="showLogin('Teacher')">
+👨‍🏫 Teacher Login
+</button>
+
+<button onclick="showLogin('Student')">
+🎓 Student Login
+</button>
+
 </div>
 
+
 <div class="box hidden" id="login">
+
 <h2 id="loginTitle"></h2>
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
-<button onclick="goHome()">Back</button>
+
+<p>Please enter your login credentials</p>
+
+<input id="username"
+placeholder="Enter Username"
+autocomplete="username">
+
+<input id="password"
+type="password"
+placeholder="Enter Password"
+autocomplete="current-password">
+
+<button onclick="login()">
+Login
+</button>
+
+<button onclick="goHome()">
+← Back
+</button>
+
 <p id="msg"></p>
+
 </div>
 
 <div class="box hidden" id="dashboard">
