@@ -431,7 +431,31 @@ function addStudent(){
 
   showStudents();
 }
+function showRegisteredStudents(){
 
+let students=JSON.parse(localStorage.getItem("students")||"[]");
+
+let html="<h3>Registered Students List</h3>";
+
+html+="<table border='1' cellpadding='8' style='border-collapse:collapse;width:100%'>";
+html+="<tr><th>No</th><th>Username</th><th>Grade</th></tr>";
+
+students.forEach((s,i)=>{
+html+=`<tr>
+<td>${i+1}</td>
+<td>${s.username}</td>
+<td>${s.grade}</td>
+</tr>`;
+});
+
+html+="</table>";
+
+let box=document.getElementById("registeredStudentsTable");
+
+box.innerHTML=html;
+box.style.display="block";
+
+}
 function showStudents(){
   let students=JSON.parse(localStorage.getItem("students")||"[]");
   let html="<h4>Registered Students</h4>";
