@@ -654,22 +654,24 @@ function showMyQuestions(){
 
 let allQuestions=JSON.parse(localStorage.getItem("questions")||"[]");
 
+let myQuestions=allQuestions.filter(q=>q.teacher===currentUser);
+
 let html="<h3>My Questions</h3>";
 
-if(allQuestions.length===0){
+if(myQuestions.length===0){
 
 html+="<p>No questions available!</p>";
 
 }else{
 
-allQuestions.forEach((q,i)=>{
+myQuestions.forEach((q,i)=>{
 
 html+=`<p><b>${i+1}. ${q.question}</b><br>`;
 html+=`Grade: ${q.grade}<br>`;
 html+=`Subject: ${q.subject}<br>`;
 html+=`Correct Answer: ${q.correct}<br>`;
-html+=`<button onclick="window.editQuestion(${i})">Edit Question</button>`;
-html+=`<button onclick="deleteQuestion(${i})">Delete Question</button></p>`;
+html+=`<button onclick="window.editQuestion(${allQuestions.indexOf(q)})">Edit Question</button>`;
+html+=`<button onclick="deleteQuestion(${allQuestions.indexOf(q)})">Delete Question</button></p>`;
 html+="<hr>";
 
 });
@@ -679,6 +681,7 @@ html+="<hr>";
 document.getElementById("myQuestions").innerHTML=html;
 
 }
+
   window.editQuestion = function(index){
 
 let allQuestions=JSON.parse(localStorage.getItem("questions")||"[]");
