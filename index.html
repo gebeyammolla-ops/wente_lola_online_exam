@@ -607,7 +607,7 @@ Submit your exam before time expires.</textarea>
 </div>
 
 
-<button onclick="goHome()">Logout</button>
+<button onclick="logout()">Logout</button>
 </div>
 
 <div class="box hidden" id="exam">
@@ -1910,6 +1910,15 @@ if(password.type==="password"){
   setTimeout(function(){
     document.getElementById("msg").innerText="";
   }, 4000);
+}
+  function logout(){
+
+if(!confirm("Are you sure you want to logout?")){
+return;
+}
+
+location.reload();
+
 }
 </script>
   <footer style="
