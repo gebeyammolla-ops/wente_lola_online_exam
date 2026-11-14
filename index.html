@@ -88,11 +88,27 @@ cursor:not-allowed;
 <h2 id="dashTitle"></h2>
 <p id="welcome"></p>
 
-
 <div id="studentArea" class="hidden">
-<h3>Take Examination</h3>
-<button onclick="showMyHistory()">My Exam History</button>
+
+<h2 style="text-align:center;color:#1565c0">
+🎓 Student Dashboard
+</h2>
+
+<!-- Exam History -->
+<div style="background:#f3e5f5;padding:18px;border-radius:12px;margin-bottom:18px">
+
+<h3>📚 My Exam History</h3>
+
+<button onclick="showMyHistory()">View My Exam History</button>
 <div id="myHistory"></div>
+
+</div>
+
+<!-- Take Examination -->
+<div style="background:#e3f2fd;padding:18px;border-radius:12px;margin-bottom:18px">
+
+<h3>📝 Take Examination</h3>
+
 <label>Grade</label>
 <select id="studentGrade">
 <option>Grade 9</option>
@@ -103,7 +119,7 @@ cursor:not-allowed;
 
 <label>Subject</label>
 <select id="studentSubject">
-  <option>ICT</option>
+<option>ICT</option>
 <option>Mathematics</option>
 <option>English</option>
 <option>Physics</option>
@@ -113,30 +129,39 @@ cursor:not-allowed;
 <option>History</option>
 </select>
 
-<button onclick="loadExam()">Load Exam</button>
-  
+<button onclick="loadExam()">🚀 Load Exam</button>
 
-<p id="timer" style="font-size:20px;color:red;font-weight:bold;"></p>
+</div>
+
+<!-- Examination Area -->
+<div style="background:#fff3e0;padding:18px;border-radius:12px;margin-bottom:18px">
+
+<p id="timer" style="font-size:22px;color:red;font-weight:bold;text-align:center"></p>
 
 <div id="examQuestions"></div>
-  
-<div style="display:flex; gap:10px; justify-content:center;">
+
+<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
 
 <button id="prevQuestionBtn" onclick="previousQuestion()" style="display:none">
-Previous Question
+⬅ Previous
 </button>
 
 <button id="nextQuestionBtn" onclick="nextQuestion()" style="display:none">
-Next Question
+Next ➡
 </button>
 
 </div>
 
 <button id="submitExamBtn" onclick="submitRealExam()" style="display:none">
-Submit Exam
+✅ Submit Examination
 </button>
+
 <p id="studentResult"></p>
+
 </div>
+
+</div>
+
 
 <div id="adminArea" class="hidden">
 
