@@ -254,10 +254,18 @@ style="width:100%;height:auto;display:block;">
 placeholder="Enter Username"
 autocomplete="username">
 
-<input id="password"
-type="password"
-placeholder="Enter Password"
-autocomplete="current-password">
+<div style="position:relative;">
+  <input id="password"
+  type="password"
+  placeholder="Enter Password"
+  autocomplete="current-password"
+  style="width:100%;box-sizing:border-box;padding-right:45px;">
+
+  <span onclick="togglePassword()"
+  style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;">
+  👁️
+  </span>
+</div>
 
 <button onclick="login()">
 Login
