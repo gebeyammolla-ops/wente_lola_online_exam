@@ -938,6 +938,7 @@ document.getElementById("teacherStatistics").innerHTML=html;
 }
 
 
+
 function loadExam(){
 
 let grade=document.getElementById("studentGrade").value;
@@ -945,7 +946,11 @@ let subject=document.getElementById("studentSubject").value;
 
 let questions=JSON.parse(localStorage.getItem("questions")||"[]");
 
-currentExamQuestions=questions.filter(q=>q.grade===grade&&q.subject===subject);
+currentExamQuestions=questions.filter(q=>
+q.grade===grade &&
+q.subject===subject &&
+q.teacher
+);
 
 currentQuestionIndex=0;
 examAnswers={};
@@ -970,6 +975,7 @@ startTimer();
 
 showCurrentQuestion();
 }
+
 
 
 function showCurrentQuestion(){
