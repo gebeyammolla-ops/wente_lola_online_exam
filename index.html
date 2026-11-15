@@ -1403,9 +1403,20 @@ document.getElementById("teacherStatistics").innerHTML=html;
 
 
 function loadExam(){
+  let fullName=document.getElementById("studentFullName").value.trim();
+let studentID=document.getElementById("studentID").value.trim();
+let grade=document.getElementById("formGrade").value;
+let section=document.getElementById("studentSection").value.trim();
+let subject=document.getElementById("formSubject").value;
 
-let grade=document.getElementById("studentGrade").value;
-let subject=document.getElementById("studentSubject").value;
+if(!fullName || !studentID || !grade || !section || !subject){
+alert("Please complete all Student Information fields!");
+document.getElementById("studentInfoForm").classList.remove("hidden");
+return;
+}
+
+document.getElementById("studentGrade").value=grade;
+document.getElementById("studentSubject").value=subject;
 
 let questions=JSON.parse(localStorage.getItem("questions")||"[]");
 
