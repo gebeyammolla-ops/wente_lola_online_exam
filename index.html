@@ -403,7 +403,11 @@ Next ➡
 
 <div id="adminArea" class="hidden">
 
-<h3>📊 System Overview</h3>
+<button onclick="document.getElementById('systemOverview').classList.toggle('hidden')">
+📊 System Overview
+</button>
+
+<div id="systemOverview" class="hidden">
 
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
 
@@ -437,22 +441,33 @@ Next ➡
 <div id="registeredStudentsTable" style="display:none"></div>
 <div id="participantsTable" style="display:none"></div>
 <div id="teachersTable" style="display:none"></div>
-
+</div>
+  
 <hr>
+<button onclick="document.getElementById('subjectsStatistics').classList.toggle('hidden')">
+📈 Subjects Statistics
+</button>
+
+<div id="subjectsStatistics" class="hidden">
 
 <h3>📈 Subjects Statistics</h3>
 <div id="totalSubjects"></div>
 <div id="questionsBySubject"></div>
 
+</div>/div>
 <hr>
+
 <button onclick="document.getElementById('adminResultsForm').classList.toggle('hidden')">
 📋 Examination Results
 </button>
 
-<div id="adminResultsForm" class="hidden">
+<div id="adminResultsForm" class="hidden"
+style="background:#fff3e0;padding:18px;border-radius:12px;margin-bottom:18px">
 
-<h3>Examination Results</h3>
+<h3>📋 Examination Results</h3>
+
 <button onclick="showResults()">View All Results</button>
+
 <div id="adminResults"></div>
 
 </div>
@@ -508,6 +523,11 @@ style="background:#e3f2fd;padding:18px;border-radius:12px;margin-bottom:18px">
 </div>
 
 <h3>🔐 Admin Security</h3>
+  <button onclick="document.getElementById('adminSecurity').classList.toggle('hidden')">
+🔐 Admin Security
+</button>
+
+<div id="adminSecurity" class="hidden">
 
 <label>New Admin Password</label>
 <input type="password" id="newAdminPassword" placeholder="Enter new password">
@@ -517,7 +537,7 @@ style="background:#e3f2fd;padding:18px;border-radius:12px;margin-bottom:18px">
 
 <p id="adminPasswordMsg"></p>
 <p id="resetAdminMsg"></p>
-
+</div>
 </div>
 
 <div id="staffArea" class="hidden">
