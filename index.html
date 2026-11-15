@@ -386,7 +386,7 @@ font-size:24px;
 <!-- Take Examination -->
 <div style="background:#e3f2fd;padding:18px;border-radius:12px;margin-bottom:18px">
 
-<h3>📝 Take Examination</h3>
+<!--<h3>📝 Take Examination</h3>-->
 
 <label>Grade</label>
 <select id="studentGrade">
@@ -438,14 +438,21 @@ Next ➡
 <p id="studentResult"></p>
 
 </div>
-
 <!-- Exam History -->
 <div style="background:#f3e5f5;padding:18px;border-radius:12px;margin-bottom:18px">
 
 <h3>📚 My Exam History</h3>
 
-<button onclick="showMyHistory()">View My Exam History</button>
+<button onclick="
+showMyHistory();
+document.getElementById('myHistoryPanel').classList.toggle('hidden');
+">
+View My Exam History
+</button>
+
+<div id="myHistoryPanel" class="hidden">
 <div id="myHistory"></div>
+</div>
 
 </div>
 
