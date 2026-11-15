@@ -319,7 +319,15 @@ Login
 </div>
 
 <div class="box hidden" id="dashboard">
-<h2 id="dashTitle"></h2>
+<h2 id="dashTitle" style="
+background:#123b70;
+color:white;
+padding:15px;
+border-radius:12px;
+text-align:center;
+font-size:24px;
+">
+</h2>
 <p id="welcome"></p>
 
 <div id="studentArea" class="hidden">
@@ -1006,7 +1014,8 @@ return;
 document.getElementById("msg").innerText="✅ Login successful! Welcome.";
 document.getElementById("login").classList.add("hidden");
 document.getElementById("dashboard").classList.remove("hidden");
-document.getElementById("dashTitle").innerText=role+" Dashboard";
+document.getElementById("dashTitle").innerText=
+role==="Admin"?"👨‍💼 Admin Dashboard":role+" Dashboard";
   if(role==="Admin"){
 updateAdminDashboard();
 }
