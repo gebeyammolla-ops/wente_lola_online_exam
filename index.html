@@ -1450,7 +1450,17 @@ document.getElementById("teacherStatistics").innerHTML=html;
 function loadExam(){
   let fullName=document.getElementById("studentFullName").value.trim();
 let studentID=document.getElementById("studentID").value.trim();
-let grade=document.getElementById("formGrade").value;
+let students=JSON.parse(localStorage.getItem("students")||"[]");
+let registeredStudent=students.find(s=>s.username===currentUser);
+
+if(!registeredStudent){
+alert("Student registration not found!");
+return;
+}
+
+let grade=registeredStudent.grade;
+document.getElementById("formGrade").value=grade;
+document.getElementById("formGrade").disabled=true;
 let section=document.getElementById("studentSection").value.trim();
 let subject=document.getElementById("formSubject").value;
 
@@ -1632,9 +1642,11 @@ document.getElementById("studentResult").innerText=
 " ("+percentage.toFixed(1)+"%) - "+status;
 
 saveExamResult(grade,subject,score,selected.length);
-
 let result={
 student:student,
+studentName:document.getElementById("studentFullName").value.trim(),
+studentID:document.getElementById("studentID").value.trim(),
+section:document.getElementById("studentSection").value.trim(),
 grade:grade,
 subject:subject,
 score:score,
@@ -1828,8 +1840,7 @@ rows.forEach((row,index)=>{
 
 if(index===0 || row.style.display!=="none"){
 
-let cells=row.querySelectorAll("th,td");
-
+let cells=row.querySelectorAll("th:not(:first-child), td:not(:first-child)");
 let data=[];
 
 cells.forEach(cell=>{
