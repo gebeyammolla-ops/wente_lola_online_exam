@@ -939,6 +939,20 @@ html+="<p>"+subject+": "+subjectCounts[subject]+"</p>";
 }
 
 document.getElementById("questionsBySubject").innerHTML=html;
+  let auditHTML="<h3>All Questions Audit</h3>";
+
+questions.forEach((q,i)=>{
+auditHTML+=`
+<div style="background:white;padding:10px;margin:8px;border:1px solid #ccc">
+<b>${i+1}. ${q.question}</b><br>
+Grade: ${q.grade}<br>
+Subject: ${q.subject}<br>
+Teacher: ${q.teacher||"Unknown"}<br>
+<button onclick="deleteQuestion(${i})">Delete This Question</button>
+</div>`;
+});
+
+document.getElementById("questionsBySubject").innerHTML+=auditHTML;
 
 let uniqueExams=new Set(
 results.map(r=>r.grade+"-"+r.subject)
