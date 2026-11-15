@@ -1785,13 +1785,18 @@ html+="<p>No results yet</p>";
 html+="<br><button onclick='deleteSelectedResults()'>Delete Selected</button>";
 
 html+="<table border='1'>";
-html+="<tr><th>Select</th><th>Student</th><th>Grade</th><th>Subject</th><th>Score</th><th>Date</th></tr>";
+html+="<tr><th>Select</th><th>Full Name</th><th>Student ID</th><th>Section</th><th>Grade</th><th>Subject</th><th>Score</th><th>Date</th></tr>";
 
 results.forEach((r,i)=>{
 
 html+="<tr>";
 html+="<td><input type='checkbox' class='resultCheck' value='"+i+"'></td>";
-html+="<td>"+r.student+"</td>";
+html+="<td>"+(r.studentName||r.student)+"</td>";
+html+="<td>"+(r.studentID||"")+"</td>";
+html+="<td>"+(r.section||"")+"</td>";
+html+="<td>"+r.grade+"</td>";
+html+="<td>"+(r.studentID||"")+"</td>";
+html+="<td>"+(r.section||"")+"</td>";
 html+="<td>"+r.grade+"</td>";
 html+="<td>"+r.subject+"</td>";
 html+="<td>"+r.score+"/"+r.total+"</td>";
@@ -1922,13 +1927,15 @@ showResults();
 
 }
 
-
 function saveExamResult(grade, subject, score, total){
 
 let examResults = JSON.parse(localStorage.getItem("examResults") || "[]");
 
 let result = {
 student: currentUser,
+studentName: document.getElementById("studentFullName").value.trim(),
+studentID: document.getElementById("studentID").value.trim(),
+section: document.getElementById("studentSection").value.trim(),
 grade: grade,
 subject: subject,
 score: score,
