@@ -1046,8 +1046,7 @@ if(role==="Student"){
   return;
   }
   currentUser=validStudent.username;
-  document.getElementById("studentGrade").value=validStudent.grade;
-document.getElementById("studentGrade").disabled=true;
+
 }
 
   if(role==="Teacher"){
@@ -1459,9 +1458,6 @@ alert("Please complete all Student Information fields!");
 document.getElementById("studentInfoForm").classList.remove("hidden");
 return;
 }
-
-document.getElementById("studentGrade").value=grade;
-document.getElementById("studentSubject").value=subject;
 
 let questions=JSON.parse(localStorage.getItem("questions")||"[]");
 
