@@ -331,6 +331,51 @@ font-size:24px;
 <p id="welcome"></p>
 
 <div id="studentArea" class="hidden">
+  <!-- Student Information Form Toggle -->
+
+<div style="background:#e8f5e9;padding:18px;border-radius:12px;margin-bottom:18px">
+
+<button onclick="document.getElementById('studentInfoForm').classList.toggle('hidden')">
+📝 Student Information Form
+</button>
+
+<div id="studentInfoForm" class="hidden">
+
+<h3>Student Information</h3>
+
+<label>Student Full Name</label>
+<input type="text" id="studentFullName" placeholder="Enter full name" required>
+
+<label>Student ID</label>
+<input type="text" id="studentID" placeholder="Enter Student ID" required>
+
+<label>Grade</label>
+<select id="formGrade">
+<option value="">Select Grade</option>
+<option>Grade 9</option>
+<option>Grade 10</option>
+<option>Grade 11</option>
+<option>Grade 12</option>
+</select>
+
+<label>Section</label>
+<input type="text" id="studentSection" placeholder="Enter Section" required>
+
+<label>Subject</label>
+<select id="formSubject">
+<option value="">Select Subject</option>
+<option>ICT</option>
+<option>Mathematics</option>
+<option>English</option>
+<option>Physics</option>
+<option>Chemistry</option>
+<option>Biology</option>
+<option>Geography</option>
+<option>History</option>
+</select>
+
+</div>
+</div>
 
 <!-- Exam History -->
 <div style="background:#f3e5f5;padding:18px;border-radius:12px;margin-bottom:18px">
