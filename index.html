@@ -455,13 +455,11 @@ Next ➡
 <div id="questionsBySubject"></div>
 
 </div>
-<hr>
-
-
 
 
 
   
+<hr>
 <button onclick="document.getElementById('adminResultsForm').classList.toggle('hidden')">
 📋 Examination Results
 </button>
@@ -469,9 +467,15 @@ Next ➡
 <div id="adminResultsForm" class="hidden"
 style="background:#fff3e0;padding:18px;border-radius:12px;margin-bottom:18px">
 
-<button onclick="showResults()">View All Results</button>
+<button onclick="document.getElementById('allResultsPanel').classList.toggle('hidden')">
+📋 View All Results
+</button>
+
+<div id="allResultsPanel" class="hidden">
 
 <div id="adminResults"></div>
+
+</div>
 
 </div>
 
