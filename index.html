@@ -506,6 +506,13 @@ style="background:#fff3e0;padding:18px;border-radius:12px;margin-bottom:18px">
 </button>
 
 <div id="allResultsPanel" class="hidden">
+  <!-- Student Examination Information -->
+
+<button onclick="showStudentExamInfo()">
+👨‍🎓 Student Examination Information
+</button>
+
+<div id="studentExamInfo" class="hidden"></div>
 
 <div id="resultsList"></div>
 
@@ -1747,6 +1754,43 @@ box.innerHTML=html;
 box.style.display="block";
 
 }
+  
+function showStudentExamInfo(){
+
+let students=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
+
+let html="<h3>Student Examination Information</h3>";
+
+if(students.length===0){
+
+html+="<p>No student examination information yet.</p>";
+
+}else{
+
+html+="<table border='1' style='width:100%'>";
+html+="<tr><th>Full Name</th><th>Student ID</th><th>Grade</th><th>Section</th><th>Subject</th></tr>";
+
+students.forEach(s=>{
+
+html+="<tr>";
+html+="<td>"+s.fullName+"</td>";
+html+="<td>"+s.studentID+"</td>";
+html+="<td>"+s.grade+"</td>";
+html+="<td>"+s.section+"</td>";
+html+="<td>"+s.subject+"</td>";
+html+="</tr>";
+
+});
+
+html+="</table>";
+
+}
+
+document.getElementById("studentExamInfo").innerHTML=html;
+document.getElementById("studentExamInfo").classList.remove("hidden");
+
+}
+
 function showResults(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
