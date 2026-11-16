@@ -1524,6 +1524,7 @@ return;
 
 document.getElementById("prevQuestionBtn").style.display="inline-block";
 document.getElementById("nextQuestionBtn").style.display="inline-block";
+  document.getElementById("submitExamBtn").style.display="inline-block";
 
 startTimer();
 
@@ -1601,8 +1602,8 @@ showCurrentQuestion();
 function submitRealExam(){
 
 let selected=currentExamQuestions;
-let grade=document.getElementById("studentGrade").value;
-let subject=document.getElementById("studentSubject").value;
+let grade=document.getElementById("formGrade").value;
+let subject=document.getElementById("formSubject").value;
 let student=currentUser;
 
 let submitted=JSON.parse(localStorage.getItem("submittedExams")||"[]");
