@@ -674,8 +674,13 @@ style="background:#e8f5e9;padding:18px;border-radius:12px;margin-bottom:18px">
 
 <h3>👨‍🎓 Student Examination Information</h3>
 
-<button onclick="showStudentExamInfo()">
-View Student Examination Information
+<button onclick="
+document.getElementById('teacherStudentExamInfo').classList.toggle('hidden');
+if(!document.getElementById('teacherStudentExamInfo').classList.contains('hidden')){
+showStudentExamInfo();
+}
+">
+📋 View Student Examination Result
 </button>
 
 <div id="teacherStudentExamInfo" class="hidden"></div>
@@ -1799,21 +1804,68 @@ box.style.display="block";
   
 function showStudentExamInfo(){
 
+let html="<h3>Student Examination Information</h3>";
+
+html+=`
+<label>Filter by Grade</label>
+<select id="teacherExamGradeFilter" onchange="filterStudentExamInfo()">
+<option value="All">All Grades</option>
+<option>Grade 9</option>
+<option>Grade 10</option>
+<option>Grade 11</option>
+<option>Grade 12</option>
+</select>
+
+<label>Filter by Subject</label>
+<select id="teacherExamSubjectFilter" onchange="filterStudentExamInfo()">
+<option value="All">All Subjects</option>
+<option>ICT</option>
+<option>Mathematics</option>
+<option>English</option>
+<option>Physics</option>
+<option>Chemistry</option>
+<option>Biology</option>
+<option>Geography</option>
+<option>History</option>
+</select>
+
+<div id="teacherStudentExamInfoTable"></div>
+`;
+
+document.getElementById("teacherStudentExamInfo").innerHTML=html;
+document.getElementById("teacherStudentExamInfo").classList.remove("hidden");
+
+filterStudentExamInfo();
+
+}
+
+
+function filterStudentExamInfo(){
+
 let students=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
 
-let html="<h3>Student Examination Information</h3>";
+let grade=document.getElementById("teacherExamGradeFilter").value;
+let subject=document.getElementById("teacherExamSubjectFilter").value;
 
-if(students.length===0){
+let filtered=students.filter(s=>
+(grade==="All" || s.grade===grade) &&
+(subject==="All" || s.subject===subject)
+);
 
-html+="<p>No student examination information yet.</p>";
+let html="";
+
+if(filtered.length===0){
+
+html="<p>No student examination information found.</p>";
 
 }else{
 
+html="<div style='overflow-x:auto'>";
 html+="<table border='1' style='width:100%;border-collapse:collapse'>";
 html+="<tr><th>Full Name</th><th>Student ID</th><th>Grade</th><th>Section</th><th>Subject</th><th>Score</th><th>Pass/Fail</th><th>Date</th></tr>";
 
-students.forEach(s=>{
+filtered.forEach(s=>{
 
 let result=results.slice().reverse().find(r=>
 r.studentID===s.studentID &&
@@ -1834,13 +1886,14 @@ html+="</tr>";
 
 });
 
-html+="</table>";
+html+="</table></div>";
 
 }
 
-document.getElementById("teacherStudentExamInfo").innerHTML=html;
-document.getElementById("teacherStudentExamInfo").classList.remove("hidden");
+document.getElementById("teacherStudentExamInfoTable").innerHTML=html;
+
 }
+
 
 
 function showResults(){
