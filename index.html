@@ -1460,6 +1460,18 @@ document.getElementById("formGrade").disabled=true;
 let section=document.getElementById("studentSection").value.trim();
 let subject=document.getElementById("formSubject").value;
 
+let studentExamInfo=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
+
+studentExamInfo.push({
+fullName:fullName,
+studentID:studentID,
+grade:grade,
+section:section,
+subject:subject
+});
+
+localStorage.setItem("studentExamInfo",JSON.stringify(studentExamInfo));
+
 if(!fullName || !studentID || !grade || !section || !subject){
 alert("Please complete all Student Information fields!");
 document.getElementById("studentInfoForm").classList.remove("hidden");
