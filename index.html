@@ -1820,7 +1820,7 @@ html+="<tr><th>Full Name</th><th>Student ID</th><th>Grade</th><th>Section</th><t
 
 students.forEach(s=>{
 
-let result=results.find(r=>
+let result=results.slice().reverse().find(r=>
 r.studentID===s.studentID &&
 r.grade===s.grade &&
 r.subject===s.subject
