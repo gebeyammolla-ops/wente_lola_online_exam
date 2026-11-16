@@ -508,7 +508,7 @@ style="background:#fff3e0;padding:18px;border-radius:12px;margin-bottom:18px">
   
   
 
-<div id="resultsList"></div>
+<div id="adminResultsList"></div>
 
 </div>
 
@@ -697,9 +697,8 @@ showStudentExamInfo();
 
 <h3>📋 Student Examination Results</h3>
 
-<button onclick="showResults()">View Results</button>
-<div id="resultsList"></div>
-
+<button onclick="showResults('teacherResultsList')">View Results</button>
+<div id="teacherResultsList"></div>
 <button onclick="showTeacherResults()">Student Results</button>
 <div id="teacherResults"></div>
 
@@ -1907,8 +1906,8 @@ document.getElementById("teacherStudentExamInfoTable").innerHTML=html;
 
 
 
-function showResults(){
-
+function showResults(targetId="adminResultsList"){
+activeResultsContainer = targetId;
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
 let html="<h3>Student Results</h3>";
 
@@ -1967,13 +1966,12 @@ html+="</table>";
 html+="<br><button onclick='window.print()'>Print Results</button>";
 html+="<br><button onclick='exportResults()'>Export Results to Excel</button>";
 
-document.getElementById("resultsList").innerHTML=html;
-
+document.getElementById(targetId).innerHTML=html;
 }
 
 function exportResults(){
 
-let rows=document.querySelectorAll("#resultsList table tr");
+let rows=document.querySelectorAll("#"+activeResultsContainer+" table tr");
 
 if(rows.length<=1){
 alert("No results available to export!");
@@ -2018,12 +2016,12 @@ URL.revokeObjectURL(link.href);
 let grade=document.getElementById("filterGrade").value;
 let subject=document.getElementById("filterSubject").value;
 
-let rows=document.querySelectorAll("#resultsList table tr");
+let rows=document.querySelectorAll("#"+activeResultsContainer+" table tr");
 
 for(let i=1;i<rows.length;i++){
 
-let rowGrade=rows[i].cells[1].innerText;
-let rowSubject=rows[i].cells[2].innerText;
+let rowGrade=rows[i].cells[4].innerText;
+let rowSubject=rows[i].cells[5].innerText;
 
 if((grade==="All" || rowGrade===grade) &&
 (subject==="All" || rowSubject===subject)){
@@ -2077,7 +2075,7 @@ localStorage.setItem("submittedExams",JSON.stringify(submitted));
 
 alert("Selected results deleted successfully!");
 
-showResults();
+showResults(activeResultsContainer);
 
 }
 
