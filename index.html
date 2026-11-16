@@ -2026,6 +2026,12 @@ function saveExamResult(grade, subject, score, total){
 
 let examResults = JSON.parse(localStorage.getItem("examResults") || "[]");
 
+let settings = JSON.parse(localStorage.getItem("examSettings") || "{}");
+let passMark = parseInt(settings.passMark) || 50;
+
+let percentage = (score / total) * 100;
+let status = percentage >= passMark ? "PASS" : "FAIL";
+
 let result = {
 student: currentUser,
 studentName: document.getElementById("studentFullName").value.trim(),
@@ -2035,6 +2041,8 @@ grade: grade,
 subject: subject,
 score: score,
 total: total,
+percentage: percentage,
+status: status,
 date: new Date().toLocaleDateString()
 };
 
@@ -2043,6 +2051,7 @@ examResults.push(result);
 localStorage.setItem("examResults", JSON.stringify(examResults));
 
 }
+
   function showMyHistory(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
