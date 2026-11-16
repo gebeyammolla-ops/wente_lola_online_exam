@@ -1444,8 +1444,10 @@ document.getElementById("teacherStatistics").innerHTML=html;
 
 
 function TakeExamination(){
-  let fullName=document.getElementById("studentFullName").value.trim();
+
+let fullName=document.getElementById("studentFullName").value.trim();
 let studentID=document.getElementById("studentID").value.trim();
+
 let students=JSON.parse(localStorage.getItem("students")||"[]");
 let registeredStudent=students.find(s=>s.username===currentUser);
 
@@ -1457,10 +1459,31 @@ return;
 let grade=registeredStudent.grade;
 document.getElementById("formGrade").value=grade;
 document.getElementById("formGrade").disabled=true;
+
 let section=document.getElementById("studentSection").value.trim();
 let subject=document.getElementById("formSubject").value;
 
+if(!fullName || !studentID || !grade || !section || !subject){
+alert("Please complete all Student Information fields!");
+document.getElementById("studentInfoForm").classList.remove("hidden");
+return;
+}
+
+// Save Student Examination Information
 let studentExamInfo=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
+
+let existing=studentExamInfo.find(s=>
+s.studentID===studentID &&
+s.subject===subject &&
+s.grade===grade
+);
+
+if(existing){
+
+existing.fullName=fullName;
+existing.section=section;
+
+}else{
 
 studentExamInfo.push({
 fullName:fullName,
@@ -1470,14 +1493,11 @@ section:section,
 subject:subject
 });
 
-localStorage.setItem("studentExamInfo",JSON.stringify(studentExamInfo));
-
-if(!fullName || !studentID || !grade || !section || !subject){
-alert("Please complete all Student Information fields!");
-document.getElementById("studentInfoForm").classList.remove("hidden");
-return;
 }
 
+localStorage.setItem("studentExamInfo",JSON.stringify(studentExamInfo));
+
+// Load Exam Questions
 let questions=JSON.parse(localStorage.getItem("questions")||"[]");
 
 currentExamQuestions=questions.filter(q=>
@@ -1508,7 +1528,9 @@ document.getElementById("nextQuestionBtn").style.display="inline-block";
 startTimer();
 
 showCurrentQuestion();
+
 }
+
 
 
 
