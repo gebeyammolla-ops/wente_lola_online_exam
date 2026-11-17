@@ -491,7 +491,22 @@ View My Exam History
 </div>
 
 
+<!-- Teacher Statistics -->
+<hr>
 
+<div style="background:#f3e5f5;padding:18px;border-radius:12px;margin-bottom:18px">
+
+<button onclick="document.getElementById('teacherStatisticsPanel').classList.toggle('hidden')">
+📈 Teacher Statistics
+</button>
+
+<div id="teacherStatisticsPanel" class="hidden">
+
+<button onclick="showTeacherStatistics()">View Teacher Statistics</button>
+<div id="teacherStatistics"></div>
+
+</div>
+</div>
   
 <hr>
 <button onclick="document.getElementById('adminResultsForm').classList.toggle('hidden')">
