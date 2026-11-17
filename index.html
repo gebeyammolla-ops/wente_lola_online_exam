@@ -2037,70 +2037,133 @@ link.click();
 URL.revokeObjectURL(link.href);
 
 }
-
 function showResults(targetId="adminResultsList"){
-activeResultsContainer = targetId;
+
+activeResultsContainer=targetId;
+
+let html="<h3>Student Examination Results</h3>";
+
+html+=`
+<label>Filter by Grade</label>
+<select id="adminResultGradeFilter" onchange="filterAdminResults()">
+<option value="All">All Grades</option>
+<option>Grade 9</option>
+<option>Grade 10</option>
+<option>Grade 11</option>
+<option>Grade 12</option>
+</select>
+
+<label>Filter by Subject</label>
+<select id="adminResultSubjectFilter" onchange="filterAdminResults()">
+<option value="All">All Subjects</option>
+<option>ICT</option>
+<option>Mathematics</option>
+<option>English</option>
+<option>Physics</option>
+<option>Chemistry</option>
+<option>Biology</option>
+<option>Geography</option>
+<option>History</option>
+</select>
+
+<div id="adminResultsTable"></div>
+`;
+
+document.getElementById(targetId).innerHTML=html;
+
+filterAdminResults();
+
+}
+function filterAdminResults(){
+
+let students=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
-let html="<h3>Student Results</h3>";
 
-html+="<label>Filter by Grade:</label>";
-html+="<select id='filterGrade' onchange='filterResults()'>";
-html+="<option value='All'>All Grades</option>";
-html+="<option>Grade 9</option>";
-html+="<option>Grade 10</option>";
-html+="<option>Grade 11</option>";
-html+="<option>Grade 12</option>";
-html+="</select>";
+let grade=document.getElementById("adminResultGradeFilter").value;
+let subject=document.getElementById("adminResultSubjectFilter").value;
 
-html+="<label>Filter by Subject:</label>";
-html+="<select id='filterSubject' onchange='filterResults()'>";
-html+="<option value='All'>All Subjects</option>";
-html+="<option>ICT</option>";
-html+="<option>Mathematics</option>";
-html+="<option>English</option>";
-html+="<option>Physics</option>";
-html+="<option>Chemistry</option>";
-html+="<option>Biology</option>";
-html+="<option>Geography</option>";
-html+="<option>History</option>";
-html+="</select>";
+let filtered=students.filter(s=>
+(grade==="All" || s.grade===grade) &&
+(subject==="All" || s.subject===subject)
+);
 
-if(results.length===0){
+let html="";
 
-html+="<p>No results yet</p>";
-
+if(filtered.length===0){
+html="<p>No student examination information found.</p>";
 }else{
 
-html+="<br><button onclick='deleteSelectedResults()'>Delete Selected</button>";
+html="<div style='overflow-x:auto'>";
+html+="<table border='1' style='width:100%;border-collapse:collapse'>";
+html+="<tr><th>Full Name</th><th>Student ID</th><th>Grade</th><th>Section</th><th>Subject</th><th>Score</th><th>Pass/Fail</th><th>Date</th><th>Action</th></tr>";
 
-html+="<table border='1'>";
-html+="<tr><th>Select</th><th>Full Name</th><th>Student ID</th><th>Section</th><th>Grade</th><th>Subject</th><th>Score</th><th>Date</th></tr>";
+filtered.forEach(s=>{
 
-results.forEach((r,i)=>{
+let result=results.slice().reverse().find(r=>
+r.studentID===s.studentID &&
+r.grade===s.grade &&
+r.subject===s.subject
+);
 
-html+="<tr>";
-html+="<td><input type='checkbox' class='resultCheck' value='"+i+"'></td>";
-html+="<td>"+(r.studentName||r.student)+"</td>";
-html+="<td>"+(r.studentID||"")+"</td>";
-html+="<td>"+(r.section||"")+"</td>";
-html+="<td>"+r.grade+"</td>";
-html+="<td>"+r.subject+"</td>";
-html+="<td>"+r.score+"/"+r.total+"</td>";
-html+="<td>"+r.date+"</td>";
-html+="</tr>";
+let studentIndex=students.indexOf(s);
+
+html+=`<tr>
+<td>${s.fullName}</td>
+<td>${s.studentID}</td>
+<td>${s.grade}</td>
+<td>${s.section}</td>
+<td>${s.subject}</td>
+<td>${result?result.score+"/"+result.total:"Not Submitted"}</td>
+<td>${result?(result.status||"Not Recorded"):"Pending"}</td>
+<td>${result?(result.date||""):""}</td>
+<td><button onclick="deleteAdminStudentExamInfo(${studentIndex})">🗑️ Delete</button></td>
+</tr>`;
 
 });
 
-html+="</table>";
-
+html+="</table></div>";
 }
 
-html+="<br><button onclick='window.print()'>Print Results</button>";
-html+="<br><button onclick='exportResults()'>Export Results to Excel</button>";
+document.getElementById("adminResultsTable").innerHTML=html;
 
-document.getElementById(targetId).innerHTML=html;
+}
+  function deleteAdminStudentExamInfo(index){
+
+let students=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
+let student=students[index];
+
+if(!student){
+alert("Student information not found!");
+return;
 }
 
+if(!confirm("Are you sure you want to delete this student's registration information and all related examination records?")){
+return;
+}
+
+students.splice(index,1);
+localStorage.setItem("studentExamInfo",JSON.stringify(students));
+
+let results=JSON.parse(localStorage.getItem("examResults")||"[]");
+results=results.filter(r=>!(
+r.studentID===student.studentID &&
+r.grade===student.grade &&
+r.subject===student.subject
+));
+localStorage.setItem("examResults",JSON.stringify(results));
+
+let submitted=JSON.parse(localStorage.getItem("submittedExams")||"[]");
+submitted=submitted.filter(s=>!(
+s.studentID===student.studentID &&
+s.grade===student.grade &&
+s.subject===student.subject
+));
+localStorage.setItem("submittedExams",JSON.stringify(submitted));
+
+alert("Student examination records deleted successfully!");
+
+filterAdminResults();
+}
 function exportResults(){
 
 let rows=document.querySelectorAll("#"+activeResultsContainer+" table tr");
