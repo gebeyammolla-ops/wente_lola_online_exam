@@ -682,7 +682,23 @@ style="background:#e8f5e9;padding:18px;border-radius:12px;margin-bottom:18px">
 <p id="saveMsg"></p>
 
 </div>
+<!-- Teacher Statistics -->
+<div style="background:#f3e5f5;padding:18px;border-radius:12px;margin-bottom:18px">
 
+<button onclick="document.getElementById('teacherStatisticsPanelTeacher').classList.toggle('hidden')">
+📈 Teacher Statistics
+</button>
+
+<div id="teacherStatisticsPanelTeacher" class="hidden">
+
+<button onclick="showTeacherStatistics('teacherStatisticsTeacher')">
+View Teacher Statistics
+</button>
+
+<div id="teacherStatisticsTeacher"></div>
+
+</div>
+</div>
 <!-- Student Examination Information -->
 <!--<div style="background:#e0f2f1;padding:18px;border-radius:12px;margin-bottom:18px">-->
 
@@ -1456,7 +1472,7 @@ win.print();
 
 }
 
-function showTeacherStatistics(){
+function showTeacherStatistics(targetId="teacherStatistics"){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
 
@@ -1487,7 +1503,7 @@ html+=`<p>Total Students: ${total}</p>`;
 html+=`<p>Average Score: ${average}</p>`;
 html+=`<p>Pass Rate: ${passRate}%</p>`;
 
-document.getElementById("teacherStatistics").innerHTML=html;
+document.getElementById(targetId).innerHTML=html;
 
 }
 
