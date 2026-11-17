@@ -683,8 +683,19 @@ showStudentExamInfo();
 📋 View Student Examination Result
 </button>
 
-<div id="teacherStudentExamInfo" class="hidden"></div>
+<div id="teacherStudentExamInfo" class="hidden">
 
+<button onclick="printStudentExamInfo()">
+🖨️ Print Results
+</button>
+
+<button onclick="exportStudentExamInfo()">
+📥 Export Results to CSV
+</button>
+
+<div id="studentExamInfoContent"></div>
+
+</div>
 </div>
 <!-- Results -->
 <div style="background:#fff3e0;padding:18px;border-radius:12px;margin-bottom:18px">
@@ -1358,7 +1369,54 @@ URL.revokeObjectURL(url);
 
 }
 
-  
+  function printStudentExamInfo(){
+
+let table=document.querySelector("#teacherStudentExamInfoTable table");
+
+if(!table){
+alert("No student examination information to print!");
+return;
+}
+
+let content=`
+<html>
+<head>
+<title>Student Examination Information</title>
+<style>
+body{font-family:Arial;padding:20px}
+h2{text-align:center}
+table{
+width:100%;
+border-collapse:collapse;
+}
+th,td{
+border:1px solid black;
+padding:8px;
+text-align:left;
+}
+</style>
+</head>
+<body>
+<h2>Wonte Lola Secondary School</h2>
+<h3>Student Examination Information</h3>
+${table.outerHTML}
+</body>
+</html>
+`;
+
+let win=window.open("","","width=900,height=700");
+
+if(!win){
+alert("Please allow pop-ups to print.");
+return;
+}
+
+win.document.write(content);
+win.document.close();
+win.focus();
+win.print();
+
+}
 function printTeacherResults(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
@@ -1782,8 +1840,7 @@ box.innerHTML=html;
 box.style.display="block";
 
 }
-  
-function showStudentExamInfo(){
+  function showStudentExamInfo(){
 
 let html="<h3>Student Examination Information</h3>";
 
@@ -1809,6 +1866,12 @@ html+=`
 <option>Geography</option>
 <option>History</option>
 </select>
+
+<br><br>
+
+<button onclick="printStudentExamInfo()">🖨️ Print Results</button>
+
+<button onclick="exportStudentExamInfo()">📥 Export Results to CSV</button>
 
 <div id="teacherStudentExamInfoTable"></div>
 `;
@@ -1875,7 +1938,43 @@ document.getElementById("teacherStudentExamInfoTable").innerHTML=html;
 
 }
 
+function exportStudentExamInfo(){
 
+let table=document.querySelector("#teacherStudentExamInfoTable table");
+
+if(!table){
+alert("No student examination information to export!");
+return;
+}
+
+let csv=[];
+
+table.querySelectorAll("tr").forEach(row=>{
+
+let cells=row.querySelectorAll("th,td");
+let data=[];
+
+cells.forEach(cell=>{
+let value=cell.innerText.replace(/"/g,'""');
+data.push('"'+value+'"');
+});
+
+csv.push(data.join(","));
+
+});
+
+let file=new Blob(["\uFEFF"+csv.join("\n")],{
+type:"text/csv;charset=utf-8;"
+});
+
+let link=document.createElement("a");
+link.href=URL.createObjectURL(file);
+link.download="Student_Examination_Information.csv";
+link.click();
+
+URL.revokeObjectURL(link.href);
+
+}
 
 function showResults(targetId="adminResultsList"){
 activeResultsContainer = targetId;
