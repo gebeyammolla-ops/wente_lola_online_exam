@@ -2099,7 +2099,6 @@ document.getElementById("teacherStudentExamInfo").classList.remove("hidden");
 filterStudentExamInfo();
 
 }
-
 function filterStudentExamInfo(){
 
 let students=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
@@ -2113,6 +2112,60 @@ let filtered=students.filter(s=>
 (subject==="All" || s.subject===subject)
 );
 
+let studentResults=results.filter(r=>
+filtered.some(s=>
+r.studentID===s.studentID &&
+r.grade===s.grade &&
+r.subject===s.subject &&
+r.section===s.section
+)
+);
+
+let dates=[...new Set(studentResults.map(r=>r.date).filter(Boolean))];
+
+dates.sort((a,b)=>new Date(a)-new Date(b));
+
+let grouped={};
+
+filtered.forEach(s=>{
+
+let key=JSON.stringify([
+s.studentID,
+s.grade,
+s.section,
+s.subject
+]);
+
+if(!grouped[key]){
+
+grouped[key]={
+fullName:s.fullName,
+studentID:s.studentID,
+grade:s.grade,
+section:s.section,
+subject:s.subject,
+results:{}
+};
+
+}
+
+});
+
+studentResults.forEach(r=>{
+
+let key=JSON.stringify([
+r.studentID,
+r.grade,
+r.section,
+r.subject
+]);
+
+if(grouped[key]){
+grouped[key].results[r.date]=r;
+}
+
+});
+
 let html="";
 
 if(filtered.length===0){
@@ -2122,30 +2175,39 @@ html="<p>No student examination information found.</p>";
 }else{
 
 html="<div style='overflow-x:auto'>";
-html+="<table border='1' style='width:100%;border-collapse:collapse'>";
-html+="<tr><th>Full Name</th><th>Student ID</th><th>Grade</th><th>Section</th><th>Subject</th><th>Score</th><th>Pass/Fail</th><th>Date</th><th>Action</th></tr>";
+html+="<table border='1' style='width:100%;border-collapse:collapse;text-align:center'>";
+html+="<tr>";
+html+="<th>Full Name</th>";
+html+="<th>Student ID</th>";
+html+="<th>Grade</th>";
+html+="<th>Section</th>";
+html+="<th>Subject</th>";
 
-filtered.forEach(s=>{
+dates.forEach(date=>{
+html+="<th>"+date+"</th>";
+});
 
-let result=results.slice().reverse().find(r=>
-r.studentID===s.studentID &&
-r.grade===s.grade &&
-r.subject===s.subject
-);
+html+="</tr>";
 
-let studentIndex=students.indexOf(s);
+Object.values(grouped).forEach(s=>{
 
 html+="<tr>";
-html+="<td>"+s.fullName+"</td>";
-html+="<td>"+s.studentID+"</td>";
-html+="<td>"+s.grade+"</td>";
-html+="<td>"+s.section+"</td>";
-html+="<td>"+s.subject+"</td>";
-html+="<td>"+(result?result.score+"/"+result.total:"Not Submitted")+"</td>";
-html+="<td>"+(result?(result.status||"Not Recorded"):"Pending")+"</td>";
-html+="<td>"+(result?(result.date||""):"")+"</td>";
 
-html+="<td><button style='background:#dc2626;color:white' onclick='deleteStudentExamInfo("+studentIndex+")'>🗑️ Delete</button></td>";
+html+="<td>"+(s.fullName||"")+"</td>";
+html+="<td>"+(s.studentID||"")+"</td>";
+html+="<td>"+(s.grade||"")+"</td>";
+html+="<td>"+(s.section||"")+"</td>";
+html+="<td>"+(s.subject||"")+"</td>";
+
+dates.forEach(date=>{
+
+let result=s.results[date];
+
+html+="<td>"+(result?
+((result.examName?result.examName+" ":"")+result.score+"/"+result.total)
+:"-")+"</td>";
+
+});
 
 html+="</tr>";
 
