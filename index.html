@@ -511,11 +511,11 @@ View My Exam History
 
 <!-- Teacher Statistics -->
 <hr>
-<div id="teacherStatisticsPanel" class="hidden" style="background:#f3e5f5;padding:18px;border-radius:12px;margin-bottom:18px">
-
-<button onclick="document.getElementById('teacherStatisticsPanel').classList.toggle('hidden')">
+<div style="background:#f3e5f5;padding:18px;border-radius:12px;margin-bottom:18px">
+<button onclick="document.getElementById('teacherStatisticsPanelContent').classList.toggle('hidden')">
 📈 Teacher Statistics
 </button>
+  <div id="teacherStatisticsPanelContent" class="hidden">
 <label>Filter by Grade</label>
 <select id="statsGrade" onchange="showTeacherStatistics()">
 <option value="All">All Grades</option>
@@ -540,6 +540,7 @@ View Teacher Statistics
 </button>
 
 <div id="teacherStatistics"></div>
+    </div>
 </div>
   
 <hr>
