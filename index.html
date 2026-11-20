@@ -2178,6 +2178,7 @@ html="<div style='overflow-x:auto'>";
 html+="<table border='1' style='width:100%;border-collapse:collapse;text-align:center'>";
 html+="<tr>";
 html+="<th>Full Name</th>";
+html+="<th>Action</th>";
 html+="<th>Student ID</th>";
 html+="<th>Grade</th>";
 html+="<th>Section</th>";
@@ -2192,7 +2193,14 @@ html+="</tr>";
 Object.values(grouped).forEach(s=>{
 
 html+="<tr>";
+  let studentIndex=students.findIndex(st=>
+st.studentID===s.studentID &&
+st.grade===s.grade &&
+st.section===s.section &&
+st.subject===s.subject
+);
 
+html+="<td><button style='background:#dc2626;color:white' onclick='deleteStudentExamInfo("+studentIndex+")'>🗑️ Delete</button></td>";
 html+="<td>"+(s.fullName||"")+"</td>";
 html+="<td>"+(s.studentID||"")+"</td>";
 html+="<td>"+(s.grade||"")+"</td>";
