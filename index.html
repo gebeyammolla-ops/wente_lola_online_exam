@@ -2293,57 +2293,101 @@ filterAdminResults();
 }
 function filterAdminResults(){
 
-let students=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
 
 let grade=document.getElementById("adminResultGradeFilter").value;
 let subject=document.getElementById("adminResultSubjectFilter").value;
 
-let filtered=students.filter(s=>
-(grade==="All" || s.grade===grade) &&
-(subject==="All" || s.subject===subject)
+let filtered=results.filter(r=>
+(grade==="All" || r.grade===grade) &&
+(subject==="All" || r.subject===subject)
 );
 
 let html="";
 
 if(filtered.length===0){
-html="<p>No student examination information found.</p>";
+
+html="<p>No examination results found.</p>";
+
 }else{
 
+let dates=[...new Set(filtered.map(r=>r.date).filter(Boolean))];
+
+dates.sort((a,b)=>new Date(a)-new Date(b));
+
+let grouped={};
+
+filtered.forEach(r=>{
+
+let key=JSON.stringify([
+r.studentID,
+r.grade,
+r.section,
+r.subject
+]);
+
+if(!grouped[key]){
+
+grouped[key]={
+studentName:r.studentName,
+studentID:r.studentID,
+grade:r.grade,
+section:r.section,
+subject:r.subject,
+results:{}
+};
+
+}
+
+grouped[key].results[r.date]=r;
+
+});
+
 html="<div style='overflow-x:auto'>";
-html+="<table border='1' style='width:100%;border-collapse:collapse'>";
-html+="<tr><th>Full Name</th><th>Student ID</th><th>Grade</th><th>Section</th><th>Subject</th><th>Score</th><th>Pass/Fail</th><th>Date</th><th>Action</th></tr>";
+html+="<table border='1' style='width:100%;border-collapse:collapse;text-align:center'>";
+html+="<tr>";
+html+="<th>Full Name</th>";
+html+="<th>Student ID</th>";
+html+="<th>Grade</th>";
+html+="<th>Section</th>";
+html+="<th>Subject</th>";
 
-filtered.forEach(s=>{
+dates.forEach(date=>{
+html+=`<th>${date}</th>`;
+});
 
-let result=results.slice().reverse().find(r=>
-r.studentID===s.studentID &&
-r.grade===s.grade &&
-r.subject===s.subject
-);
+html+="</tr>";
 
-let studentIndex=students.indexOf(s);
+Object.values(grouped).forEach(s=>{
 
-html+=`<tr>
-<td>${s.fullName}</td>
-<td>${s.studentID}</td>
-<td>${s.grade}</td>
-<td>${s.section}</td>
-<td>${s.subject}</td>
-<td>${result?result.score+"/"+result.total:"Not Submitted"}</td>
-<td>${result?(result.status||"Not Recorded"):"Pending"}</td>
-<td>${result?(result.date||""):""}</td>
-<td><button onclick="deleteAdminStudentExamInfo(${studentIndex})">🗑️ Delete</button></td>
-</tr>`;
+html+="<tr>";
+
+html+=`<td>${s.studentName||""}</td>`;
+html+=`<td>${s.studentID||""}</td>`;
+html+=`<td>${s.grade||""}</td>`;
+html+=`<td>${s.section||""}</td>`;
+html+=`<td>${s.subject||""}</td>`;
+
+dates.forEach(date=>{
+
+let result=s.results[date];
+
+html+=`<td>${result?result.score+"/"+result.total:"-"}</td>`;
+
+});
+
+html+="</tr>";
 
 });
 
 html+="</table></div>";
+
 }
 
 document.getElementById("adminResultsTable").innerHTML=html;
 
 }
+
   function deleteAdminStudentExamInfo(index){
 
 let students=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
