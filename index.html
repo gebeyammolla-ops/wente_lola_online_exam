@@ -2254,12 +2254,17 @@ link.click();
 URL.revokeObjectURL(link.href);
 
 }
+
+  
 function showResults(targetId="adminResultsList"){
 
 activeResultsContainer=targetId;
 
 let html="<h3>Student Examination Results</h3>";
-
+html+=`
+<button onclick="printAdminResults()">🖨️ Print</button>
+<button onclick="exportAdminResultsToExcel()">📊 Export to Excel</button>
+`;
 html+=`
 <label>Filter by Grade</label>
 <select id="adminResultGradeFilter" onchange="filterAdminResults()">
@@ -2386,7 +2391,73 @@ html+="</table></div>";
 document.getElementById("adminResultsTable").innerHTML=html;
 
 }
+  function printAdminResults(){
 
+let content=document.getElementById("adminResultsTable").innerHTML;
+
+let win=window.open("","","width=1000,height=700");
+
+win.document.write(`
+<html>
+<head>
+<title>Examination Results</title>
+<style>
+body{font-family:Arial;padding:20px}
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid black;padding:8px;text-align:center}
+th{background:#eee}
+</style>
+</head>
+<body>
+<h2>Wonte Lola Secondary School</h2>
+<h3>Examination Results Register</h3>
+${content}
+</body>
+</html>
+`);
+
+win.document.close();
+win.focus();
+win.print();
+win.close();
+
+}
+function exportAdminResultsToExcel(){
+
+let table=document.querySelector("#adminResultsTable table");
+
+if(!table){
+alert("No examination results found!");
+return;
+}
+
+let html=`
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+${table.outerHTML}
+</body>
+</html>
+`;
+
+let blob=new Blob(
+["\ufeff"+html],
+{type:"application/vnd.ms-excel"}
+);
+
+let url=URL.createObjectURL(blob);
+
+let a=document.createElement("a");
+a.href=url;
+a.download="Examination_Results.xls";
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+  
   function deleteAdminStudentExamInfo(index){
 
 let students=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
