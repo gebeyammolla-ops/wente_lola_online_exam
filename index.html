@@ -2323,7 +2323,8 @@ let key=JSON.stringify([
 r.studentID,
 r.grade,
 r.section,
-r.subject
+r.subject 
+r.examName
 ]);
 
 if(!grouped[key]){
@@ -2334,6 +2335,7 @@ studentID:r.studentID,
 grade:r.grade,
 section:r.section,
 subject:r.subject,
+examName:r.examName,
 results:{}
 };
 
@@ -2351,6 +2353,7 @@ html+="<th>Student ID</th>";
 html+="<th>Grade</th>";
 html+="<th>Section</th>";
 html+="<th>Subject</th>";
+html+="<th>Exam Name</th>";
 
 dates.forEach(date=>{
 html+=`<th>${date}</th>`;
@@ -2367,6 +2370,7 @@ html+=`<td>${s.studentID||""}</td>`;
 html+=`<td>${s.grade||""}</td>`;
 html+=`<td>${s.section||""}</td>`;
 html+=`<td>${s.subject||""}</td>`;
+html+=`<td>${s.examName||""}</td>`;
 
 dates.forEach(date=>{
 
