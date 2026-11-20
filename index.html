@@ -517,13 +517,30 @@ View My Exam History
 <button onclick="document.getElementById('teacherStatisticsPanel').classList.toggle('hidden')">
 📈 Teacher Statistics
 </button>
+<label>Filter by Grade</label>
+<select id="statsGrade" onchange="showTeacherStatistics()">
+<option value="All">All Grades</option>
+<option>Grade 9</option>
+<option>Grade 10</option>
+<option>Grade 11</option>
+<option>Grade 12</option>
+</select>
 
-<div id="teacherStatisticsPanel" class="hidden">
+<label>Filter by Subject</label>
+<select id="statsSubject" onchange="showTeacherStatistics()">
+<option value="All">All Subjects</option>
+</select>
 
-<button onclick="showTeacherStatistics()">View Teacher Statistics</button>
+<label>Filter by Section</label>
+<select id="statsSection" onchange="showTeacherStatistics()">
+<option value="All">All Sections</option>
+</select>
+
+<button onclick="showTeacherStatistics()">
+View Teacher Statistics
+</button>
+
 <div id="teacherStatistics"></div>
-
-</div>
 </div>
   
 <hr>
@@ -706,10 +723,26 @@ style="background:#e8f5e9;padding:18px;border-radius:12px;margin-bottom:18px">
 <button onclick="document.getElementById('teacherStatisticsPanelTeacher').classList.toggle('hidden')">
 📈 Teacher Statistics
 </button>
+<label>Filter by Grade</label>
+<select id="statsGradeTeacher" onchange="showTeacherStatistics('teacherStatisticsTeacher','statsGradeTeacher','statsSubjectTeacher','statsSectionTeacher')">
+<option value="All">All Grades</option>
+<option>Grade 9</option>
+<option>Grade 10</option>
+<option>Grade 11</option>
+<option>Grade 12</option>
+</select>
 
-<div id="teacherStatisticsPanelTeacher" class="hidden">
+<label>Filter by Subject</label>
+<select id="statsSubjectTeacher" onchange="showTeacherStatistics('teacherStatisticsTeacher','statsGradeTeacher','statsSubjectTeacher','statsSectionTeacher')">
+<option value="All">All Subjects</option>
+</select>
 
-<button onclick="showTeacherStatistics('teacherStatisticsTeacher')">
+<label>Filter by Section</label>
+<select id="statsSectionTeacher" onchange="showTeacherStatistics('teacherStatisticsTeacher','statsGradeTeacher','statsSubjectTeacher','statsSectionTeacher')">
+<option value="All">All Sections</option>
+</select>
+
+<button onclick="showTeacherStatistics('teacherStatisticsTeacher','statsGradeTeacher','statsSubjectTeacher','statsSectionTeacher')">
 View Teacher Statistics
 </button>
 
@@ -1486,17 +1519,64 @@ win.document.close();
 win.print();
 
 }
-
-function showTeacherStatistics(targetId="teacherStatistics"){
+ 
+  
+function showTeacherStatistics(
+targetId="teacherStatistics",
+gradeId="statsGrade",
+subjectId="statsSubject",
+sectionId="statsSection"
+)
+{
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
 
-let grade=document.getElementById("teacherFilterGrade").value;
-let subject=document.getElementById("teacherFilterSubject").value;
+let gradeSelect=document.getElementById(gradeId);
+let subjectSelect=document.getElementById(subjectId);
+let sectionSelect=document.getElementById(sectionId);
 
+let grade=gradeSelect.value;
+let subject=subjectSelect.value;
+let section=sectionSelect.value;
+
+// Populate Subject Filter
+let subjects=[...new Set(results.map(r=>r.subject).filter(Boolean))];
+
+let oldSubject=subjectSelect.value;
+
+subjectSelect.innerHTML='<option value="All">All Subjects</option>';
+
+subjects.sort().forEach(s=>{
+subjectSelect.innerHTML+=`<option value="${s}">${s}</option>`;
+});
+
+if(subjects.includes(oldSubject)){
+subjectSelect.value=oldSubject;
+}
+
+// Populate Section Filter
+let sections=[...new Set(results.map(r=>r.section).filter(Boolean))];
+
+let oldSection=sectionSelect.value;
+
+sectionSelect.innerHTML='<option value="All">All Sections</option>';
+
+sections.sort().forEach(s=>{
+sectionSelect.innerHTML+=`<option value="${s}">${s}</option>`;
+});
+
+if(sections.includes(oldSection)){
+sectionSelect.value=oldSection;
+}
+
+subject=subjectSelect.value;
+section=sectionSelect.value;
+
+// Filter Resultslet filtered=results.filter(r=>{
 let filtered=results.filter(r=>{
-return (grade==="All"||r.grade===grade)&&
-(subject==="All"||r.subject===subject);
+return (grade==="All"||r.grade===grade) &&
+(subject==="All"||r.subject===subject) &&
+(section==="All"||r.section===section);
 });
 
 let total=filtered.length;
@@ -1505,15 +1585,16 @@ let passed=0;
 
 filtered.forEach(r=>{
 scoreSum+=Number(r.score);
+
 if(Number(r.score)/Number(r.total)>=0.5){
 passed++;
 }
 });
 
-let average=total?((scoreSum/total).toFixed(2)):"0";
+let average=total?(scoreSum/total).toFixed(2):"0";
 let passRate=total?((passed/total)*100).toFixed(2):"0";
 
-let html="<h3>Teacher Statistics</h3>";
+let html="";
 html+=`<p>Total Students: ${total}</p>`;
 html+=`<p>Average Score: ${average}</p>`;
 html+=`<p>Pass Rate: ${passRate}%</p>`;
