@@ -1075,21 +1075,37 @@ html+="<p>"+subject+": "+subjectCounts[subject]+"</p>";
 }
 
 document.getElementById("questionsBySubject").innerHTML=html;
-  let auditHTML="<h3>All Questions Audit</h3>";
+  let auditHTML=`
+<h3>All Questions Audit</h3>
 
-questions.forEach((q,i)=>{
-auditHTML+=`
-<div style="background:white;padding:10px;margin:8px;border:1px solid #ccc">
-<b>${i+1}. ${q.question}</b><br>
-Grade: ${q.grade}<br>
-Subject: ${q.subject}<br>
-Teacher: ${q.teacher||"Unknown"}<br>
-<button onclick="deleteQuestion(${i})">Delete This Question</button>
-</div>`;
-});
+<label>Filter by Grade</label>
+<select id="auditGradeFilter" onchange="filterAllQuestionsAudit()">
+<option value="All">All Grades</option>
+<option value="Grade 9">Grade 9</option>
+<option value="Grade 10">Grade 10</option>
+<option value="Grade 11">Grade 11</option>
+<option value="Grade 12">Grade 12</option>
+</select>
+
+<label>Filter by Subject</label>
+<select id="auditSubjectFilter" onchange="filterAllQuestionsAudit()">
+<option value="All">All Subjects</option>
+</select>
+
+<div id="allQuestionsAuditList"></div>
+`;
 
 document.getElementById("questionsBySubject").innerHTML+=auditHTML;
 
+let auditSubjects=[...new Set(questions.map(q=>q.subject))];
+
+let subjectSelect=document.getElementById("auditSubjectFilter");
+
+auditSubjects.forEach(subject=>{
+subjectSelect.innerHTML+=`<option value="${subject}">${subject}</option>`;
+});
+
+showAllQuestionsAudit();
 let uniqueExams=new Set(
 results.map(r=>r.grade+"-"+r.subject)
 );
@@ -1098,7 +1114,48 @@ document.getElementById("totalExams").innerText=
 "Total Exams: "+uniqueExams.size;
 
 }
+function showAllQuestionsAudit(){
+filterAllQuestionsAudit();
+}
 
+function filterAllQuestionsAudit(){
+
+let questions=JSON.parse(localStorage.getItem("questions")||"[]");
+
+let grade=document.getElementById("auditGradeFilter").value;
+let subject=document.getElementById("auditSubjectFilter").value;
+
+let filtered=questions.map((q,i)=>({...q,originalIndex:i})).filter(q=>{
+
+return (grade==="All"||q.grade===grade)&&
+(subject==="All"||q.subject===subject);
+
+});
+
+let html="";
+
+if(filtered.length===0){
+html="<p>No questions found.</p>";
+}
+
+filtered.forEach((q,i)=>{
+
+html+=`
+<div style="background:white;padding:10px;margin:8px;border:1px solid #ccc">
+<b>${i+1}. ${q.question}</b><br>
+Grade: ${q.grade}<br>
+Subject: ${q.subject}<br>
+Teacher: ${q.teacher||"Unknown"}<br>
+<button onclick="deleteQuestion(${q.originalIndex})">
+Delete This Question
+</button>
+</div>`;
+
+});
+
+document.getElementById("allQuestionsAuditList").innerHTML=html;
+
+}
 
   
 function resetAdminPassword(){
