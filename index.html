@@ -507,7 +507,19 @@ View My Exam History
 <div id="questionsBySubject"></div>
 
 </div>
+<hr>
 
+<button onclick="document.getElementById('resultRegister').classList.toggle('hidden')">
+📋 Examination Result Register
+</button>
+
+<div id="resultRegister" class="hidden">
+
+<h3>📋 Examination Result Register</h3>
+
+<div id="resultRegisterContent"></div>
+
+</div>
 
 <!-- Teacher Statistics -->
 <hr>
@@ -683,7 +695,8 @@ style="background:#e8f5e9;padding:18px;border-radius:12px;margin-bottom:18px">
 <option>Geography</option>
 <option>History</option>
 </select>
-
+<label>Exam Name</label>
+<input id="examName" placeholder="Enter exam name">
 <label>Question</label>
 <input id="question" placeholder="Enter question">
 
@@ -1277,6 +1290,7 @@ function saveQuestion(){
 let q = {
 grade: document.getElementById("qGrade").value,
 subject: document.getElementById("qSubject").value,
+examName: document.getElementById("examName").value.trim(),
 teacher: currentUser,
 question: document.getElementById("question").value,
 A: document.getElementById("optA").value,
@@ -1285,10 +1299,10 @@ C: document.getElementById("optC").value,
 D: document.getElementById("optD").value,
 correct: document.getElementById("correct").value
 };
-
-if(!q.question || !q.A || !q.B || !q.C || !q.D){
-document.getElementById("saveMsg").innerText="Please fill all fields!";
+if(!q.examName || !q.question || !q.A || !q.B || !q.C || !q.D){
+document.getElementById("saveMsg").innerText="Please enter Exam Name and fill all question fields!";
 return;
+}
 }
 console.log("Saved question teacher:",q.teacher,"Current user:",currentUser);
 questions.push(q);
