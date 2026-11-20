@@ -1284,7 +1284,6 @@ location.reload();
   
 let questions = JSON.parse(localStorage.getItem("questions") || "[]");
 
-
 function saveQuestion(){
 
 let q = {
@@ -1299,12 +1298,14 @@ C: document.getElementById("optC").value,
 D: document.getElementById("optD").value,
 correct: document.getElementById("correct").value
 };
+
 if(!q.examName || !q.question || !q.A || !q.B || !q.C || !q.D){
 document.getElementById("saveMsg").innerText="Please enter Exam Name and fill all question fields!";
 return;
 }
-}
+
 console.log("Saved question teacher:",q.teacher,"Current user:",currentUser);
+
 questions.push(q);
 
 localStorage.setItem("questions",JSON.stringify(questions));
@@ -1735,7 +1736,8 @@ let questions=JSON.parse(localStorage.getItem("questions")||"[]");
 currentExamQuestions=questions.filter(q=>
 q.grade===grade &&
 q.subject===subject &&
-q.teacher
+q.teacher &&
+q.examName
 );
 
 currentQuestionIndex=0;
@@ -2472,6 +2474,7 @@ studentID: document.getElementById("studentID").value.trim(),
 section: document.getElementById("studentSection").value.trim(),
 grade: grade,
 subject: subject,
+  examName: currentExamQuestions[0].examName,
 score: score,
 total: total,
 percentage: percentage,
