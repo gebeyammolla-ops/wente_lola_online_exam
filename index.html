@@ -2366,6 +2366,8 @@ document.getElementById(targetId).innerHTML=html;
 filterAdminResults();
 
 }
+
+  
 function filterAdminResults(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
@@ -2421,6 +2423,7 @@ grouped[key].results[r.date]=r;
 html="<div style='overflow-x:auto'>";
 html+="<table border='1' style='width:100%;border-collapse:collapse;text-align:center'>";
 html+="<tr>";
+html+="<th>Action</th>";
 html+="<th>Full Name</th>";
 html+="<th>Student ID</th>";
 html+="<th>Grade</th>";
@@ -2435,8 +2438,12 @@ html+="</tr>";
 
 Object.values(grouped).forEach(s=>{
 
-html+="<tr>";
-
+html+="<tr>html+=`<td>
+<button style="background:#dc2626;color:white"
+onclick='deleteAdminExamResult(${JSON.stringify(s.studentID)},${JSON.stringify(s.grade)},${JSON.stringify(s.section)},${JSON.stringify(s.subject)})'>
+🗑️ Delete
+</button>
+</td>`;
 html+=`<td>${s.studentName||""}</td>`;
 html+=`<td>${s.studentID||""}</td>`;
 html+=`<td>${s.grade||""}</td>`;
@@ -2461,7 +2468,31 @@ html+="</table></div>";
 document.getElementById("adminResultsTable").innerHTML=html;
 
 }
-  function printAdminResults(){
+  function deleteAdminExamResult(studentID,grade,section,subject){
+
+if(!confirm("Are you sure you want to delete all examination results for this student and subject?")){
+return;
+}
+
+let results=JSON.parse(localStorage.getItem("examResults")||"[]");
+
+results=results.filter(r=>
+!(r.studentID===studentID &&
+r.grade===grade &&
+r.section===section &&
+r.subject===subject)
+);
+
+localStorage.setItem("examResults",JSON.stringify(results));
+
+alert("Examination results deleted successfully!");
+
+filterAdminResults();
+
+}
+
+  
+function printAdminResults(){
 
 let content=document.getElementById("adminResultsTable").innerHTML;
 
