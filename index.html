@@ -755,6 +755,10 @@ style="background:#e8f5e9;padding:18px;border-radius:12px;margin-bottom:18px">
 <option value="All">All Sections</option>
 </select>
 
+    <label>Filter by Exam Name</label>
+<select id="statsExamName" onchange="showTeacherStatistics('teacherStatisticsTeacher','statsGradeTeacher','statsSubjectTeacher','statsSectionTeacher')">
+<option value="All">All Exams</option>
+</select>
 <button onclick="showTeacherStatistics('teacherStatisticsTeacher','statsGradeTeacher','statsSubjectTeacher','statsSectionTeacher')">
 View Teacher Statistics
 </button>
@@ -1590,15 +1594,13 @@ win.document.close();
 win.print();
 
 }
- 
-  
+
 function showTeacherStatistics(
 targetId="teacherStatistics",
 gradeId="statsGrade",
 subjectId="statsSubject",
 sectionId="statsSection"
-)
-{
+){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
 
@@ -1612,8 +1614,7 @@ let section=sectionSelect.value;
 
 // Populate Subject Filter
 let subjects=[...new Set(results.map(r=>r.subject).filter(Boolean))];
-
-let oldSubject=subjectSelect.value;
+let oldSubject=subject;
 
 subjectSelect.innerHTML='<option value="All">All Subjects</option>';
 
@@ -1621,14 +1622,11 @@ subjects.sort().forEach(s=>{
 subjectSelect.innerHTML+=`<option value="${s}">${s}</option>`;
 });
 
-if(subjects.includes(oldSubject)){
-subjectSelect.value=oldSubject;
-}
+subjectSelect.value=subjects.includes(oldSubject)?oldSubject:"All";
 
 // Populate Section Filter
 let sections=[...new Set(results.map(r=>r.section).filter(Boolean))];
-
-let oldSection=sectionSelect.value;
+let oldSection=section;
 
 sectionSelect.innerHTML='<option value="All">All Sections</option>';
 
@@ -1636,8 +1634,27 @@ sections.sort().forEach(s=>{
 sectionSelect.innerHTML+=`<option value="${s}">${s}</option>`;
 });
 
-if(sections.includes(oldSection)){
-sectionSelect.value=oldSection;
+sectionSelect.value=sections.includes(oldSection)?oldSection:"All";
+
+// Populate Exam Name Filter
+let examSelect=document.getElementById("statsExamName");
+
+let examName="All";
+
+if(examSelect){
+
+let oldExamName=examSelect.value;
+let examNames=[...new Set(results.map(r=>r.examName).filter(Boolean))];
+
+examSelect.innerHTML='<option value="All">All Exams</option>';
+
+examNames.sort().forEach(name=>{
+examSelect.innerHTML+=`<option value="${name}">${name}</option>`;
+});
+
+examSelect.value=examNames.includes(oldExamName)?oldExamName:"All";
+examName=examSelect.value;
+
 }
 
 subject=subjectSelect.value;
@@ -1647,7 +1664,8 @@ section=sectionSelect.value;
 let filtered=results.filter(r=>{
 return (grade==="All"||r.grade===grade) &&
 (subject==="All"||r.subject===subject) &&
-(section==="All"||r.section===section);
+(section==="All"||r.section===section) &&
+(examName==="All"||r.examName===examName);
 });
 
 let total=filtered.length;
@@ -1675,6 +1693,9 @@ document.getElementById(targetId).innerHTML=html;
 }
 
 
+
+
+  
 
 function TakeExamination(){
 
@@ -1733,11 +1754,18 @@ localStorage.setItem("studentExamInfo",JSON.stringify(studentExamInfo));
 // Load Exam Questions
 let questions=JSON.parse(localStorage.getItem("questions")||"[]");
 
+let examNames=[...new Set(questions
+.filter(q=>q.grade===grade && q.subject===subject && q.examName)
+.map(q=>q.examName)
+)];
+
+let latestExamName=examNames[examNames.length-1];
+
 currentExamQuestions=questions.filter(q=>
 q.grade===grade &&
 q.subject===subject &&
-q.teacher &&
-q.examName
+q.examName===latestExamName &&
+q.teacher
 );
 
 currentQuestionIndex=0;
@@ -1839,17 +1867,22 @@ let selected=currentExamQuestions;
 let grade=document.getElementById("formGrade").value;
 let subject=document.getElementById("formSubject").value;
 let student=currentUser;
-
+let today=new Date().toLocaleDateString();
 let submitted=JSON.parse(localStorage.getItem("submittedExams")||"[]");
-
 let existing=submitted.find(e=>
-e.student===student&&e.grade===grade&&e.subject===subject
+e.student===student&&
+e.grade===grade&&
+e.subject===subject&&
+e.date===today
 );
 
 if(existing){
 let oldResults=JSON.parse(localStorage.getItem("examResults")||"[]");
 let oldResult=oldResults.find(e=>
-e.student===student&&e.grade===grade&&e.subject===subject
+e.student===student&&
+e.grade===grade&&
+e.subject===subject&&
+e.date===today
 );
 if(oldResult){
 document.getElementById("studentResult").innerText=
@@ -1911,11 +1944,12 @@ studentID:document.getElementById("studentID").value.trim(),
 section:document.getElementById("studentSection").value.trim(),
 grade:grade,
 subject:subject,
+  examName:currentExamQuestions[0].examName,
 score:score,
 total:selected.length,
 percentage:percentage,
 status:status,
-date:new Date().toLocaleDateString(),
+date:today,
 answers:{...examAnswers},
 questions:selected
 };
@@ -2466,7 +2500,7 @@ let passMark = parseInt(settings.passMark) || 50;
 
 let percentage = (score / total) * 100;
 let status = percentage >= passMark ? "PASS" : "FAIL";
-
+let today = new Date().toLocaleDateString();
 let result = {
 student: currentUser,
 studentName: document.getElementById("studentFullName").value.trim(),
@@ -2479,7 +2513,7 @@ score: score,
 total: total,
 percentage: percentage,
 status: status,
-date: new Date().toLocaleDateString()
+  date: today,
 };
 
 examResults.push(result);
