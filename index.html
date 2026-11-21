@@ -1636,26 +1636,6 @@ sectionSelect.innerHTML+=`<option value="${s}">${s}</option>`;
 
 sectionSelect.value=sections.includes(oldSection)?oldSection:"All";
 
-// Populate Exam Name Filter
-let examSelect=document.getElementById("statsExamName");
-
-let examName="All";
-
-if(examSelect){
-
-let oldExamName=examSelect.value;
-let examNames=[...new Set(results.map(r=>r.examName).filter(Boolean))];
-
-examSelect.innerHTML='<option value="All">All Exams</option>';
-
-examNames.sort().forEach(name=>{
-examSelect.innerHTML+=`<option value="${name}">${name}</option>`;
-});
-
-examSelect.value=examNames.includes(oldExamName)?oldExamName:"All";
-examName=examSelect.value;
-
-}
 
 subject=subjectSelect.value;
 section=sectionSelect.value;
@@ -1664,8 +1644,7 @@ section=sectionSelect.value;
 let filtered=results.filter(r=>{
 return (grade==="All"||r.grade===grade) &&
 (subject==="All"||r.subject===subject) &&
-(section==="All"||r.section===section) &&
-(examName==="All"||r.examName===examName);
+(section==="All"||r.section===section);
 });
 
 let total=filtered.length;
