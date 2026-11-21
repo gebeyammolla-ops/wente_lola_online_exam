@@ -1999,9 +1999,6 @@ submitRealExam();
 },1000);
 
 }
-  
-  
-  
   function showParticipants(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
@@ -2031,25 +2028,31 @@ html+=`
 </select>
 
 <button onclick="filterParticipants()">Filter</button>
+<button onclick="showParticipants()">Close</button>
 
 </div>
 `;
 
 html+="<table border='1' cellpadding='8' style='border-collapse:collapse;width:100%'>";
 html+="<tr><th>No</th><th>Student</th><th>Grade</th><th>Subject</th><th>Section</th><th>Score</th><th>Date</th></tr>";
+
 results.forEach((r,i)=>{
 html+=`<tr>
 <td>${i+1}</td>
-<td>${r.student}</td>
-<td>${r.grade}</td>
-<td>${r.subject}</td>
+<td>${r.student||"-"}</td>
+<td>${r.grade||"-"}</td>
+<td>${r.subject||"-"}</td>
+<td>${r.section||"-"}</td>
 <td>${r.score}/${r.total}</td>
-<td>${r.date}</td>
+<td>${r.date||"-"}</td>
 </tr>`;
 });
 
 html+="</table>";
-    
+
+box.innerHTML=html;
+box.style.display="block";
+
 let gradeSelect=document.getElementById("participantGradeFilter");
 let subjectSelect=document.getElementById("participantSubjectFilter");
 let sectionSelect=document.getElementById("participantSectionFilter");
@@ -2065,13 +2068,10 @@ subjectSelect.innerHTML+=`<option value="${s}">${s}</option>`;
 [...new Set(results.map(r=>r.section).filter(Boolean))].forEach(s=>{
 sectionSelect.innerHTML+=`<option value="${s}">${s}</option>`;
 });
-box.innerHTML=html;
-box.style.display="block";
 
 }
 
 
-  
 function filterParticipants(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
@@ -2090,18 +2090,39 @@ let box=document.getElementById("participantsTable");
 
 let html="<h3>Exam Participants List</h3>";
 
+html+=`
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px">
+
+<select id="participantGradeFilter">
+<option value="All">All Grades</option>
+</select>
+
+<select id="participantSubjectFilter">
+<option value="All">All Subjects</option>
+</select>
+
+<select id="participantSectionFilter">
+<option value="All">All Sections</option>
+</select>
+
+<button onclick="filterParticipants()">Filter</button>
+<button onclick="showParticipants()">Close</button>
+
+</div>
+`;
+
 html+="<table border='1' cellpadding='8' style='border-collapse:collapse;width:100%'>";
 html+="<tr><th>No</th><th>Student</th><th>Grade</th><th>Subject</th><th>Section</th><th>Score</th><th>Date</th></tr>";
 
 filtered.forEach((r,i)=>{
 html+=`<tr>
 <td>${i+1}</td>
-<td>${r.student}</td>
-<td>${r.grade}</td>
-<td>${r.subject}</td>
+<td>${r.student||"-"}</td>
+<td>${r.grade||"-"}</td>
+<td>${r.subject||"-"}</td>
 <td>${r.section||"-"}</td>
 <td>${r.score}/${r.total}</td>
-<td>${r.date}</td>
+<td>${r.date||"-"}</td>
 </tr>`;
 });
 
@@ -2109,8 +2130,23 @@ html+="</table>";
 
 box.innerHTML=html;
 
-}
+let gradeSelect=document.getElementById("participantGradeFilter");
+let subjectSelect=document.getElementById("participantSubjectFilter");
+let sectionSelect=document.getElementById("participantSectionFilter");
 
+[...new Set(results.map(r=>r.grade).filter(Boolean))].forEach(g=>{
+gradeSelect.innerHTML+=`<option value="${g}" ${g===grade?"selected":""}>${g}</option>`;
+});
+
+[...new Set(results.map(r=>r.subject).filter(Boolean))].forEach(s=>{
+subjectSelect.innerHTML+=`<option value="${s}" ${s===subject?"selected":""}>${s}</option>`;
+});
+
+[...new Set(results.map(r=>r.section).filter(Boolean))].forEach(s=>{
+sectionSelect.innerHTML+=`<option value="${s}" ${s===section?"selected":""}>${s}</option>`;
+});
+
+}
 
   
   function showStudentExamInfo(){
