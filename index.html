@@ -848,12 +848,12 @@ showStudentExamInfo();
 
 <script>
 
+
+
   
 let currentExamQuestions = [];
 let currentQuestionIndex = 0;
 let examAnswers = {};
-
-  
 
   let editingQuestionIndex = -1;
 let role="";
@@ -864,8 +864,11 @@ document.getElementById("home").classList.add("hidden");
 document.getElementById("login").classList.remove("hidden");
 document.getElementById("loginTitle").innerText=r+" Login";
 }
-function showRegisteredTeachers(){
 
+
+  
+  
+function showRegisteredTeachers(){
 let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
 
 let html="<h3>Registered Teachers List</h3>";
@@ -892,8 +895,11 @@ box.innerHTML=html;
 box.style.display="block";
 
 }
-function addTeacher(){
 
+
+
+  
+function addTeacher(){
 let username=document.getElementById("teacherUsername").value.trim();
 let password=document.getElementById("teacherPassword").value;
 
@@ -918,6 +924,10 @@ document.getElementById("teacherUsername").value="";
 document.getElementById("teacherPassword").value="";
 
 }
+
+
+
+  
   function showTeachers(){
 
 let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
@@ -949,6 +959,10 @@ box.innerHTML=html;
 box.style.display="block";
 
 }
+
+
+
+  
   function deleteTeacher(index){
 
 let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
@@ -964,6 +978,9 @@ showTeachers();
 }
 
 }
+
+
+  
   
 function addStudent(){
   let username=document.getElementById("studentUsername").value.trim();
@@ -991,6 +1008,11 @@ function addStudent(){
 
   showStudents();
 }
+
+
+
+
+  
 function showRegisteredStudents(){
 
 let students=JSON.parse(localStorage.getItem("students")||"[]");
@@ -1020,6 +1042,10 @@ box.innerHTML=html;
 box.style.display="block";
 
 }
+
+
+
+  
 function showStudents(){
   let students=JSON.parse(localStorage.getItem("students")||"[]");
   let html="<h4>Registered Students</h4>";
@@ -1039,6 +1065,8 @@ function showStudents(){
   document.getElementById("studentList").innerHTML=html;
 }
 
+
+  
 function deleteStudent(index){
   let students=JSON.parse(localStorage.getItem("students")||"[]");
 
@@ -1048,6 +1076,7 @@ function deleteStudent(index){
     showStudents();
   }
 }
+
 
   
 function updateAdminDashboard(){
@@ -1127,6 +1156,10 @@ document.getElementById("totalExams").innerText=
 "Total Exams: "+uniqueExams.size;
 
 }
+
+
+
+  
 function showAllQuestionsAudit(){
 filterAllQuestionsAudit();
 }
@@ -1170,6 +1203,8 @@ document.getElementById("allQuestionsAuditList").innerHTML=html;
 
 }
 
+
+
   
 function resetAdminPassword(){
 
@@ -1179,6 +1214,8 @@ document.getElementById("resetAdminMsg").innerText=
 "Admin Password reset successfully! Default password is 1234.";
 
 }
+
+
 
   
 function changeAdminPassword(){
@@ -1198,6 +1235,8 @@ document.getElementById("newAdminPassword").value="";
 
 }
 
+
+  
 function login(){
 let u=document.getElementById("username").value.trim();
   currentUser=u;
@@ -1269,21 +1308,31 @@ document.getElementById("staffArea").classList.remove("hidden");
 document.getElementById("studentArea").classList.remove("hidden");
 }
 }
+
+
+
+  
 function startExam(){
 document.getElementById("dashboard").classList.add("hidden");
 document.getElementById("exam").classList.remove("hidden");
 }
+
+  
 function submitExam(){
 let a=document.querySelector('input[name="q1"]:checked');
 let score=a&&a.value==="a"?1:0;
 document.getElementById("result").innerText="Score: "+score+"/1";
 }
+
+  
 function goHome(){
 location.reload();
 }
   
 let questions = JSON.parse(localStorage.getItem("questions") || "[]");
 
+
+  
 function saveQuestion(){
 
 let q = {
@@ -1354,6 +1403,8 @@ html+="<hr>";
 document.getElementById("myQuestions").innerHTML=html;
 
 }
+
+
   
 function showTeacherQuestionStatistics(){
 
@@ -1408,6 +1459,9 @@ document.getElementById("saveMsg").innerText=
 
 };
 
+
+
+  
 function deleteQuestion(index){
 
 let allQuestions=JSON.parse(localStorage.getItem("questions")||"[]");
@@ -1468,6 +1522,8 @@ document.getElementById("teacherResults").innerHTML=html;
 
 }
 
+
+  
 function exportTeacherResults(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
@@ -1503,6 +1559,8 @@ URL.revokeObjectURL(url);
 
 }
 
+
+  
   function printStudentExamInfo(){
 
 let table=document.querySelector("#teacherStudentExamInfoTable table");
@@ -1551,6 +1609,9 @@ win.focus();
 win.print();
 
 }
+
+
+  
 function printTeacherResults(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
@@ -1591,6 +1652,8 @@ win.print();
 
 }
 
+
+  
 function showTeacherStatistics(
 targetId="teacherStatistics",
 gradeId="statsGrade",
@@ -1668,9 +1731,6 @@ document.getElementById(targetId).innerHTML=html;
 }
 
 
-
-
-  
 
 function TakeExamination(){
 
@@ -1771,7 +1831,6 @@ showCurrentQuestion();
 
 
 
-
 function showCurrentQuestion(){
 
 let q=currentExamQuestions[currentQuestionIndex];
@@ -1816,6 +1875,7 @@ currentQuestionIndex===currentExamQuestions.length-1?
 }
 
 
+  
 function previousQuestion(){
 
 if(currentQuestionIndex>0){
@@ -1826,6 +1886,7 @@ showCurrentQuestion();
 }
 
 
+  
 function nextQuestion(){
 
 if(currentQuestionIndex<currentExamQuestions.length-1){
@@ -1836,6 +1897,7 @@ showCurrentQuestion();
 }
 
 
+  
 function submitRealExam(){
 
 let selected=currentExamQuestions;
@@ -1965,6 +2027,8 @@ let examTime = 60 * 60;
 let timerInterval;
 
 
+
+  
 function startTimer(){
 
 clearInterval(timerInterval);
@@ -1999,6 +2063,10 @@ submitRealExam();
 },1000);
 
 }
+
+
+
+  
   function showParticipants(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
@@ -2072,6 +2140,8 @@ sectionSelect.innerHTML+=`<option value="${s}">${s}</option>`;
 }
 
 
+
+  
 function filterParticipants(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
@@ -2148,6 +2218,7 @@ sectionSelect.innerHTML+=`<option value="${s}" ${s===section?"selected":""}>${s}
 
 }
 
+
   
   function showStudentExamInfo(){
 
@@ -2191,6 +2262,10 @@ document.getElementById("teacherStudentExamInfo").classList.remove("hidden");
 filterStudentExamInfo();
 
 }
+
+
+
+  
 function filterStudentExamInfo(){
 
 let students=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
@@ -2322,6 +2397,7 @@ document.getElementById("teacherStudentExamInfoTable").innerHTML=html;
 }
 
 
+  
 function deleteStudentExamInfo(index){
 
 let students=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
@@ -2378,6 +2454,7 @@ filterStudentExamInfo();
 }
 
 
+  
 
 function exportStudentExamInfo(){
 
@@ -2416,6 +2493,7 @@ link.click();
 URL.revokeObjectURL(link.href);
 
 }
+
 
   
 function showResults(targetId="adminResultsList"){
@@ -2458,6 +2536,8 @@ document.getElementById(targetId).innerHTML=html;
 filterAdminResults();
 
 }
+
+
 
   
 function filterAdminResults(){
@@ -2562,7 +2642,11 @@ html+="</table></div>";
 document.getElementById("adminResultsTable").innerHTML=html;
 
 }
-  function deleteAdminExamResult(studentID,grade,section,subject){
+
+
+
+  
+function deleteAdminExamResult(studentID,grade,section,subject){
 
 if(!confirm("Are you sure you want to delete all examination results for this student and subject?")){
 return;
@@ -2584,6 +2668,7 @@ alert("Examination results deleted successfully!");
 filterAdminResults();
 
 }
+
 
   
 function printAdminResults(){
@@ -2617,6 +2702,9 @@ win.print();
 win.close();
 
 }
+
+
+  
 function exportAdminResultsToExcel(){
 
 let table=document.querySelector("#adminResultsTable table");
@@ -2652,8 +2740,10 @@ a.click();
 URL.revokeObjectURL(url);
 
 }
+
+
   
-  function deleteAdminStudentExamInfo(index){
+function deleteAdminStudentExamInfo(index){
 
 let students=JSON.parse(localStorage.getItem("studentExamInfo")||"[]");
 let student=students[index];
@@ -2690,6 +2780,9 @@ alert("Student examination records deleted successfully!");
 
 filterAdminResults();
 }
+
+
+  
 function exportResults(){
 
 let rows=document.querySelectorAll("#"+activeResultsContainer+" table tr");
@@ -2731,8 +2824,10 @@ link.click();
 URL.revokeObjectURL(link.href);
 
 }
+
+
   
-  function filterResults(){
+function filterResults(){
 
 let grade=document.getElementById("filterGrade").value;
 let subject=document.getElementById("filterSubject").value;
@@ -2758,6 +2853,8 @@ rows[i].style.display="none";
 }
 
 }
+
+
   
 function deleteSelectedResults(){
 
@@ -2800,6 +2897,8 @@ showResults(activeResultsContainer);
 
 }
 
+
+  
 function saveExamResult(grade, subject, score, total){
 
 let examResults = JSON.parse(localStorage.getItem("examResults") || "[]");
@@ -2831,7 +2930,9 @@ localStorage.setItem("examResults", JSON.stringify(examResults));
 
 }
 
-  function showMyHistory(){
+
+  
+function showMyHistory(){
 
 let results=JSON.parse(localStorage.getItem("examResults")||"[]");
 
@@ -2855,6 +2956,9 @@ html+=`Date: ${r.date}</p><hr>`;
 document.getElementById("myHistory").innerHTML=html;
 
 }
+
+
+  
 function saveExamSettings(){
 
 let settings={
@@ -2896,6 +3000,8 @@ document.getElementById("saveMsg").innerText=
 
 };
 
+
+  
 function updateQuestion(){
 
 if(editingQuestionIndex===undefined || editingQuestionIndex===-1){
@@ -2933,7 +3039,10 @@ document.getElementById("saveMsg").innerText=
 showMyQuestions();
 
 }
-  function togglePassword(){
+
+
+  
+function togglePassword(){
 
 let password=document.getElementById("password");
 
@@ -2944,12 +3053,18 @@ if(password.type==="password"){
 }
 
 }
+
+
+  
   function clearLoginMessage(){
   setTimeout(function(){
     document.getElementById("msg").innerText="";
   }, 4000);
 }
-  function logout(){
+
+
+  
+function logout(){
 
 if(!confirm("Are you sure you want to logout?")){
 return;
