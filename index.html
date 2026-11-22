@@ -3090,7 +3090,89 @@ return;
 location.reload();
 
 }
+// ADMIN PASSWORD RESET
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+
+if(event === "PASSWORD_RECOVERY"){
+
+document.getElementById("login").classList.add("hidden");
+
+let oldForm=document.getElementById("passwordResetArea");
+
+if(oldForm) oldForm.remove();
+
+let form=document.createElement("div");
+
+form.id="passwordResetArea";
+form.className="box";
+
+form.innerHTML=`
+<h2>Reset Admin Password</h2>
+
+<p>Enter your new password</p>
+
+<input type="password"
+id="newAdminPassword"
+placeholder="New Password">
+
+<input type="password"
+id="confirmAdminPassword"
+placeholder="Confirm New Password">
+
+<button onclick="saveNewAdminPassword()">
+Update Password
+</button>
+
+<p id="resetMessage"></p>
+`;
+
+document.body.appendChild(form);
+
+}
+
+});
+
+
+async function saveNewAdminPassword(){
+
+let p1=document.getElementById("newAdminPassword").value;
+let p2=document.getElementById("confirmAdminPassword").value;
+
+let msg=document.getElementById("resetMessage");
+
+if(p1.length<6){
+msg.innerText="Password must be at least 6 characters.";
+return;
+}
+
+if(p1!==p2){
+msg.innerText="Passwords do not match.";
+return;
+}
+
+const {error}=await supabaseClient.auth.updateUser({
+password:p1
+});
+
+if(error){
+msg.innerText="Error: "+error.message;
+return;
+}
+
+alert("Admin password updated successfully!");
+
+await supabaseClient.auth.signOut();
+
+window.location.hash="";
+
+location.reload();
+
+}
+
 </script>
+
+  
   <footer style="
 background:#123b70;
 color:white;
