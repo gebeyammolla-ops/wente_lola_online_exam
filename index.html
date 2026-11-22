@@ -1250,7 +1250,7 @@ document.getElementById("newAdminPassword").value="";
 }
 
 
-  async function login(){
+async function login(){
 
 let u=document.getElementById("username").value.trim();
 let p=document.getElementById("password").value;
@@ -1274,9 +1274,7 @@ return;
 
 currentUser=validStudent.username;
 
-}
-
-if(role==="Teacher"){
+}else if(role==="Teacher"){
 
 let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
 let validTeacher=teachers.find(t=>t.username===u&&t.password===p);
@@ -1289,9 +1287,7 @@ return;
 
 currentUser=validTeacher.username;
 
-}
-
-if(role==="Admin"){
+}else if(role==="Admin"){
 
 try{
 
@@ -1324,19 +1320,19 @@ return;
 
 currentUser=data.user.email;
 
-}
 }catch(err){
 
 console.error("ADMIN LOGIN ERROR:",err);
 
-document.getElementById("msg").innerText=
-"Login error: "+(err.message || String(err));
-
+document.getElementById("msg").innerText="Login error: "+(err.message || String(err));
 clearLoginMessage();
 return;
 
 }
 
+}else{
+document.getElementById("msg").innerText="Invalid login role.";
+return;
 }
 
 document.getElementById("msg").innerText="✅ Login successful! Welcome.";
@@ -1357,12 +1353,11 @@ if(role==="Admin"){
 document.getElementById("adminArea").classList.remove("hidden");
 }else if(role==="Student"){
 document.getElementById("studentArea").classList.remove("hidden");
-}else{
+}else if(role==="Teacher"){
 document.getElementById("staffArea").classList.remove("hidden");
 }
 
 }
-
 
 
   
