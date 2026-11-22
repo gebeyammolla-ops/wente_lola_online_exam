@@ -1217,36 +1217,6 @@ document.getElementById("allQuestionsAuditList").innerHTML=html;
 
 
   
-function resetAdminPassword(){
-
-localStorage.removeItem("adminPassword");
-
-document.getElementById("resetAdminMsg").innerText=
-"Admin Password reset successfully! Default password is 1234.";
-
-}
-
-
-
-  
-function changeAdminPassword(){
-
-let newPassword=document.getElementById("newAdminPassword").value;
-
-if(newPassword.length<4){
-document.getElementById("adminPasswordMsg").innerText="Password must be at least 4 characters!";
-return;
-}
-
-localStorage.setItem("adminPassword",newPassword);
-
-document.getElementById("adminPasswordMsg").innerText="Admin Password changed successfully!";
-
-document.getElementById("newAdminPassword").value="";
-
-}
-
-  
   
 async function login(){
 
