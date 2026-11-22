@@ -283,8 +283,9 @@ font-size:14px;
     
   </script>
 <script>
-const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
-const SUPABASE_KEY = "YOUR_PUBLISHABLE_KEY";
+const SUPABASE_URL = "https://tdsdjsdgicltcdqmfztl.supabase.co/rest/v1/
+";
+const SUPABASE_KEY = "sb_publishable_315ghZWkmKcUjmgCYJUZoA_m8KqJFeF";
 
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
@@ -1249,77 +1250,112 @@ document.getElementById("newAdminPassword").value="";
 }
 
 
-  
-function login(){
+  async function login(){
+
 let u=document.getElementById("username").value.trim();
-  currentUser=u;
 let p=document.getElementById("password").value;
-  if(!u || !p){
-  document.getElementById("msg").innerText="Please enter username and password";
-    clearLoginMessage();
-  return;
+
+if(!u || !p){
+document.getElementById("msg").innerText="Please enter username and password";
+clearLoginMessage();
+return;
 }
-  
+
 if(role==="Student"){
-  let students=JSON.parse(localStorage.getItem("students")||"[]");
-  let validStudent=students.find(s=>s.username===u&&s.password===p);
-  if(!validStudent){
-  document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
-    clearLoginMessage();
-  return;
-  }
-  currentUser=validStudent.username;
+
+let students=JSON.parse(localStorage.getItem("students")||"[]");
+let validStudent=students.find(s=>s.username===u&&s.password===p);
+
+if(!validStudent){
+document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
+clearLoginMessage();
+return;
+}
+
+currentUser=validStudent.username;
 
 }
 
-  if(role==="Teacher"){
+if(role==="Teacher"){
 
 let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
-
-let validTeacher=teachers.find(t=>t.username===u && t.password===p);
+let validTeacher=teachers.find(t=>t.username===u&&t.password===p);
 
 if(!validTeacher){
-
 document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
-  clearLoginMessage();
-
+clearLoginMessage();
 return;
+}
+
+currentUser=validTeacher.username;
 
 }
- currentUser=validTeacher.username; 
 
+if(role==="Admin"){
+
+try{
+
+const {data,error}=await supabaseClient.auth.signInWithPassword({
+email:u,
+password:p
+});
+
+if(error || !data.user){
+document.getElementById("msg").innerText="❌ Admin login failed. Check email and password.";
+clearLoginMessage();
+return;
 }
-  if(role==="Admin"){
 
+const {data:roleData,error:roleError}=await supabaseClient
+.from("user_roles")
+.select("role")
+.eq("user_id",data.user.id)
+.maybeSingle();
 
-if(u!=="admin" || p!==(localStorage.getItem("adminPassword")||"1234")){
+if(roleError || !roleData || roleData.role!=="Admin"){
 
+await supabaseClient.auth.signOut();
 
-document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
+document.getElementById("msg").innerText="❌ Admin permission not found.";
 clearLoginMessage();
 return;
 
 }
 
-} 
+currentUser=data.user.email;
+
+}catch(err){
+
+document.getElementById("msg").innerText="❌ Login error. Please try again.";
+clearLoginMessage();
+return;
+
+}
+
+}
+
 document.getElementById("msg").innerText="✅ Login successful! Welcome.";
+
 document.getElementById("login").classList.add("hidden");
 document.getElementById("dashboard").classList.remove("hidden");
+
 document.getElementById("dashTitle").innerText=
 role==="Admin"?"👨‍💼 Admin Dashboard":role+" Dashboard";
-  if(role==="Admin"){
+
+if(role==="Admin"){
 updateAdminDashboard();
 }
-document.getElementById("welcome").innerText="Welcome "+u+"! Login successful.";
-  if(role==="Admin"){
+
+document.getElementById("welcome").innerText="Welcome "+currentUser+"! Login successful.";
+
+if(role==="Admin"){
 document.getElementById("adminArea").classList.remove("hidden");
 }else if(role==="Student"){
 document.getElementById("studentArea").classList.remove("hidden");
 }else{
 document.getElementById("staffArea").classList.remove("hidden");
-}if(role==="Student"){
-document.getElementById("studentArea").classList.remove("hidden");
 }
+
 }
 
 
