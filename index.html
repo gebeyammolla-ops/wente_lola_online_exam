@@ -1324,9 +1324,14 @@ return;
 
 currentUser=data.user.email;
 
+}
 }catch(err){
 
-document.getElementById("msg").innerText="❌ Login error. Please try again.";
+console.error("ADMIN LOGIN ERROR:",err);
+
+document.getElementById("msg").innerText=
+"Login error: "+(err.message || String(err));
+
 clearLoginMessage();
 return;
 
