@@ -279,18 +279,8 @@ font-size:14px;
 }
 </style>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    
-  </script>
-<script>
-const SUPABASE_URL = "https://tdsdjsdgicltcdqmfztl.supabase.co/rest/v1/
-";
-const SUPABASE_KEY = "sb_publishable_315ghZWkmKcUjmgCYJUZoA_m8KqJFeF";
-
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  
 </script>
   
 </head>
@@ -862,8 +852,15 @@ showStudentExamInfo();
 
 <script>
 
+  
 
+const SUPABASE_URL = "https://tdsdjsdgicltcdqmfztl.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_315ghZWkmKcUjmgCYJUZoA_m8KqJFeF";
 
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
   
 let currentExamQuestions = [];
 let currentQuestionIndex = 0;
@@ -1249,7 +1246,8 @@ document.getElementById("newAdminPassword").value="";
 
 }
 
-
+  
+  
 async function login(){
 
 let u=document.getElementById("username").value.trim();
