@@ -337,6 +337,9 @@ autocomplete="username">
 <button onclick="login()">
 Login
 </button>
+  <button onclick="sendAdminPasswordReset()">
+Forgot Password?
+</button>
 
 <button onclick="goHome()">
 ← Back
@@ -3167,6 +3170,34 @@ await supabaseClient.auth.signOut();
 window.location.hash="";
 
 location.reload();
+
+}
+
+
+  async function sendAdminPasswordReset(){
+
+let email=document.getElementById("username").value.trim();
+
+let msg=document.getElementById("msg");
+
+if(!email){
+msg.innerText="Please enter your admin email.";
+return;
+}
+
+const {error}=await supabaseClient.auth.resetPasswordForEmail(
+email,
+{
+redirectTo:"https://gebeyammolla-ops.github.io/wente_lola_online_exam/"
+}
+);
+
+if(error){
+msg.innerText="Error: "+error.message;
+return;
+}
+
+msg.innerText="Password reset email sent. Check your email.";
 
 }
 
