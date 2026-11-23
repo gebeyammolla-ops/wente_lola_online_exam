@@ -3200,6 +3200,45 @@ msg.innerText="Password reset email sent. Check your email.";
 
 }
 
+
+// ADMIN PASSWORD RECOVERY
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+
+  if(event === "PASSWORD_RECOVERY"){
+
+    document.getElementById("login").classList.add("hidden");
+
+    let oldForm = document.getElementById("passwordResetArea");
+    if(oldForm) oldForm.remove();
+
+    let form = document.createElement("div");
+
+    form.id = "passwordResetArea";
+    form.className = "box";
+
+    form.innerHTML = `
+      <h2>Reset Admin Password</h2>
+      <p>Enter your new password</p>
+
+      <input type="password" id="newAdminPassword"
+      placeholder="New Password">
+
+      <input type="password" id="confirmAdminPassword"
+      placeholder="Confirm New Password">
+
+      <button onclick="saveNewAdminPassword()">
+      Update Password
+      </button>
+
+      <p id="resetMessage"></p>
+    `;
+
+    document.body.appendChild(form);
+  }
+});
+  
+
 </script>
 
   
