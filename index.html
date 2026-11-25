@@ -1297,8 +1297,7 @@ await supabaseClient
 .select("role, full_name")
 .eq("id", authData.user.id)
 .single();
-
-if(profileError || profile.role !== "admin"){
+if(profileError || !profile || profile.role.trim().toLowerCase() !== "admin"){
   await supabaseClient.auth.signOut();
   document.getElementById("msg").innerText =
   "Admin access denied.";
