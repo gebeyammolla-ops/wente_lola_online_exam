@@ -278,10 +278,6 @@ font-size:14px;
     box-sizing: border-box;
 }
 </style>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-  
-</script>
   
 </head>
 <body>
@@ -336,9 +332,6 @@ autocomplete="username">
 
 <button onclick="login()">
 Login
-</button>
-  <button onclick="sendAdminPasswordReset()">
-Forgot Password?
 </button>
 
 <button onclick="goHome()">
@@ -666,8 +659,8 @@ style="background:#e3f2fd;padding:18px;border-radius:12px;margin-bottom:18px">
 <input id="passMark" type="number" value="50">
 
 <label>Exam Instructions</label>
-<textarea id="examInstructions" rows="4">Read all questions carefully.
-Choose the correct answer.
+<textarea id="examInstructions" rows="4">Read all questions carefully.</br>
+Choose the correct answer.</br>
 Submit your exam before time expires.</textarea>
 
 <button onclick="saveExamSettings()">Save Exam Settings</button>
@@ -855,14 +848,8 @@ showStudentExamInfo();
 
 <script>
 
-  
-const SUPABASE_URL = "https://tdsdjsdgicltcdqmfztl.supabase.co";
-const SUPABASE_KEY = "sb_publishable_315ghZWkmKcUjmgCYJUZoA_m8KqJFeF";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+
   
 let currentExamQuestions = [];
 let currentQuestionIndex = 0;
@@ -1219,115 +1206,109 @@ document.getElementById("allQuestionsAuditList").innerHTML=html;
 
 
   
+function resetAdminPassword(){
+
+localStorage.removeItem("adminPassword");
+
+document.getElementById("resetAdminMsg").innerText=
+"Admin Password reset successfully! Default password is 1234.";
+
+}
+
+
+
   
-async function login(){
+function changeAdminPassword(){
 
+let newPassword=document.getElementById("newAdminPassword").value;
+
+if(newPassword.length<4){
+document.getElementById("adminPasswordMsg").innerText="Password must be at least 4 characters!";
+return;
+}
+
+localStorage.setItem("adminPassword",newPassword);
+
+document.getElementById("adminPasswordMsg").innerText="Admin Password changed successfully!";
+
+document.getElementById("newAdminPassword").value="";
+
+}
+
+
+  
+function login(){
 let u=document.getElementById("username").value.trim();
+  currentUser=u;
 let p=document.getElementById("password").value;
-
-if(!u || !p){
-document.getElementById("msg").innerText="Please enter username and password";
-clearLoginMessage();
-return;
+  if(!u || !p){
+  document.getElementById("msg").innerText="Please enter username and password";
+    clearLoginMessage();
+  return;
 }
-
+  
 if(role==="Student"){
+  let students=JSON.parse(localStorage.getItem("students")||"[]");
+  let validStudent=students.find(s=>s.username===u&&s.password===p);
+  if(!validStudent){
+  document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
+    clearLoginMessage();
+  return;
+  }
+  currentUser=validStudent.username;
 
-let students=JSON.parse(localStorage.getItem("students")||"[]");
-let validStudent=students.find(s=>s.username===u&&s.password===p);
-
-if(!validStudent){
-document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
-clearLoginMessage();
-return;
 }
 
-currentUser=validStudent.username;
-
-}else if(role==="Teacher"){
+  if(role==="Teacher"){
 
 let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
-let validTeacher=teachers.find(t=>t.username===u&&t.password===p);
+
+let validTeacher=teachers.find(t=>t.username===u && t.password===p);
 
 if(!validTeacher){
+
+document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
+  clearLoginMessage();
+
+return;
+
+}
+ currentUser=validTeacher.username; 
+
+}
+  if(role==="Admin"){
+
+
+if(u!=="admin" || p!==(localStorage.getItem("adminPassword")||"1234")){
+
+
 document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
 clearLoginMessage();
 return;
-}
-
-currentUser=validTeacher.username;
-
-}else if(role==="Admin"){
-
-try{
-
-const {data,error}=await supabaseClient.auth.signInWithPassword({
-email:u,
-password:p
-});
-
-if(error || !data.user){
-document.getElementById("msg").innerText="❌ Admin login failed. Check email and password.";
-clearLoginMessage();
-return;
-}
-
-const {data:roleData,error:roleError}=await supabaseClient
-.from("user_roles")
-.select("role")
-.eq("user_id",data.user.id)
-.maybeSingle();
-
-if(roleError || !roleData || roleData.role!=="Admin"){
-
-await supabaseClient.auth.signOut();
-
-document.getElementById("msg").innerText="❌ Admin permission not found.";
-clearLoginMessage();
-return;
 
 }
 
-currentUser=data.user.email;
-
-}catch(err){
-
-console.error("ADMIN LOGIN ERROR:",err);
-
-document.getElementById("msg").innerText="Login error: "+(err.message || String(err));
-clearLoginMessage();
-return;
-
-}
-
-}else{
-document.getElementById("msg").innerText="Invalid login role.";
-return;
-}
-
+} 
 document.getElementById("msg").innerText="✅ Login successful! Welcome.";
-
 document.getElementById("login").classList.add("hidden");
 document.getElementById("dashboard").classList.remove("hidden");
-
 document.getElementById("dashTitle").innerText=
 role==="Admin"?"👨‍💼 Admin Dashboard":role+" Dashboard";
-
-if(role==="Admin"){
+  if(role==="Admin"){
 updateAdminDashboard();
 }
-
-document.getElementById("welcome").innerText="Welcome "+currentUser+"! Login successful.";
-
-if(role==="Admin"){
+document.getElementById("welcome").innerText="Welcome "+u+"! Login successful.";
+  if(role==="Admin"){
 document.getElementById("adminArea").classList.remove("hidden");
 }else if(role==="Student"){
 document.getElementById("studentArea").classList.remove("hidden");
-}else if(role==="Teacher"){
+}else{
 document.getElementById("staffArea").classList.remove("hidden");
+}if(role==="Student"){
+document.getElementById("studentArea").classList.remove("hidden");
+}
 }
 
-}
 
 
   
@@ -3092,156 +3073,7 @@ return;
 location.reload();
 
 }
-// ADMIN PASSWORD RESET
-
-supabaseClient.auth.onAuthStateChange((event, session) => {
-
-if(event === "PASSWORD_RECOVERY"){
-
-document.getElementById("login").classList.add("hidden");
-
-let oldForm=document.getElementById("passwordResetArea");
-
-if(oldForm) oldForm.remove();
-
-let form=document.createElement("div");
-
-form.id="passwordResetArea";
-form.className="box";
-
-form.innerHTML=`
-<h2>Reset Admin Password</h2>
-
-<p>Enter your new password</p>
-
-<input type="password"
-id="newAdminPassword"
-placeholder="New Password">
-
-<input type="password"
-id="confirmAdminPassword"
-placeholder="Confirm New Password">
-
-<button onclick="saveNewAdminPassword()">
-Update Password
-</button>
-
-<p id="resetMessage"></p>
-`;
-
-document.body.appendChild(form);
-
-}
-
-});
-
-
-async function saveNewAdminPassword(){
-
-let p1=document.getElementById("newAdminPassword").value;
-let p2=document.getElementById("confirmAdminPassword").value;
-
-let msg=document.getElementById("resetMessage");
-
-if(p1.length<6){
-msg.innerText="Password must be at least 6 characters.";
-return;
-}
-
-if(p1!==p2){
-msg.innerText="Passwords do not match.";
-return;
-}
-
-const {error}=await supabaseClient.auth.updateUser({
-password:p1
-});
-
-if(error){
-msg.innerText="Error: "+error.message;
-return;
-}
-
-alert("Admin password updated successfully!");
-
-await supabaseClient.auth.signOut();
-
-window.location.hash="";
-
-location.reload();
-
-}
-
-
-  async function sendAdminPasswordReset(){
-
-let email=document.getElementById("username").value.trim();
-
-let msg=document.getElementById("msg");
-
-if(!email){
-msg.innerText="Please enter your admin email.";
-return;
-}
-
-const {error}=await supabaseClient.auth.resetPasswordForEmail(
-email,
-{
-redirectTo:"https://gebeyammolla-ops.github.io/wente_lola_online_exam/"
-}
-);
-
-if(error){
-msg.innerText="Error: "+error.message;
-return;
-}
-
-msg.innerText="Password reset email sent. Check your email.";
-
-}
-
-
-// ADMIN PASSWORD RECOVERY
-
-supabaseClient.auth.onAuthStateChange((event, session) => {
-
-  if(event === "PASSWORD_RECOVERY"){
-
-    document.getElementById("login").classList.add("hidden");
-
-    let oldForm = document.getElementById("passwordResetArea");
-    if(oldForm) oldForm.remove();
-
-    let form = document.createElement("div");
-
-    form.id = "passwordResetArea";
-    form.className = "box";
-
-    form.innerHTML = `
-      <h2>Reset Admin Password</h2>
-      <p>Enter your new password</p>
-
-      <input type="password" id="newAdminPassword"
-      placeholder="New Password">
-
-      <input type="password" id="confirmAdminPassword"
-      placeholder="Confirm New Password">
-
-      <button onclick="saveNewAdminPassword()">
-      Update Password
-      </button>
-
-      <p id="resetMessage"></p>
-    `;
-
-    document.body.appendChild(form);
-  }
-});
-  
-
 </script>
-
-  
   <footer style="
 background:#123b70;
 color:white;
