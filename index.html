@@ -1237,7 +1237,7 @@ document.getElementById("newAdminPassword").value="";
 
 
   
-function login(){
+async function login(){
 let u=document.getElementById("username").value.trim();
   currentUser=u;
 let p=document.getElementById("password").value;
@@ -1278,17 +1278,37 @@ return;
 }
   if(role==="Admin"){
 
+const {data: authData, error: authError} =
+await supabaseClient.auth.signInWithPassword({
+  email: u,
+  password: p
+});
 
-if(u!=="admin" || p!==(localStorage.getItem("adminPassword")||"1234")){
-
-
-document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
-clearLoginMessage();
-return;
-
+if(authError){
+  document.getElementById("msg").innerText =
+  "Login failed! Check your email and password.";
+  clearLoginMessage();
+  return;
 }
 
-} 
+const {data: profile, error: profileError} =
+await supabaseClient
+.from("profiles")
+.select("role, full_name")
+.eq("id", authData.user.id)
+.single();
+
+if(profileError || profile.role !== "admin"){
+  await supabaseClient.auth.signOut();
+  document.getElementById("msg").innerText =
+  "Admin access denied.";
+  clearLoginMessage();
+  return;
+}
+
+currentUser = profile.full_name || u;
+
+}
 document.getElementById("msg").innerText="✅ Login successful! Welcome.";
 document.getElementById("login").classList.add("hidden");
 document.getElementById("dashboard").classList.remove("hidden");
