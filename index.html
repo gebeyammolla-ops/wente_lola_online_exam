@@ -3074,6 +3074,18 @@ location.reload();
 
 }
 </script>
+  
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://awxabgwdvgzchrpnycbl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_G_EQNwc-DYTUP4p_TvpZ3g_ZG6iTc0p";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+</script>
+  
   <footer style="
 background:#123b70;
 color:white;
