@@ -1258,22 +1258,40 @@ if(role==="Student"){
   currentUser=validStudent.username;
 
 }
+if(role==="Teacher"){
 
-  if(role==="Teacher"){
+const response = await fetch(
+  "https://awxabgwdvgzchrpnycbl.supabase.co/functions/v1/clever-handler",
+  {
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "apikey":SUPABASE_KEY
+    },
+    body:JSON.stringify({
+      username:u,
+      password:p
+    })
+  }
+);
 
-let teachers=JSON.parse(localStorage.getItem("teachers")||"[]");
+const result = await response.json();
 
-let validTeacher=teachers.find(t=>t.username===u && t.password===p);
-
-if(!validTeacher){
-
-document.getElementById("msg").innerText="❌ Login failed! Please check your username and password.";
+if(!response.ok || !result.success){
+  document.getElementById("msg").innerText =
+    "❌ Login failed! Please check your username and password.";
   clearLoginMessage();
-
-return;
-
+  return;
 }
- currentUser=validTeacher.username; 
+
+const { error } = await supabaseClient.auth.setSession(result.session);
+
+if(error){
+  document.getElementById("msg").innerText = "Login session failed.";
+  return;
+}
+
+currentUser = result.full_name;
 
 }
   if(role==="Admin"){
