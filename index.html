@@ -2980,7 +2980,7 @@ if(!response.ok){
 throw new Error(data.error || "Could not load results");
 }
 
-const rows = data.results || data.data || [];
+const rows = data.results || data.data || data.result || [];
 
 const results = rows.map(r=>({
 student:r.student_username || "",
