@@ -1934,43 +1934,36 @@ showCurrentQuestion();
 }
 
 
-  
-function submitRealExam(){
+
+   
+async function submitRealExam(){
 
 let selected=currentExamQuestions;
 let grade=document.getElementById("formGrade").value;
 let subject=document.getElementById("formSubject").value;
 let student=currentUser;
 let today=new Date().toLocaleDateString();
+
 let submitted=JSON.parse(localStorage.getItem("submittedExams")||"[]");
+
+let examName=selected[0]?.examName || "";
+
 let existing=submitted.find(e=>
 e.student===student&&
 e.grade===grade&&
 e.subject===subject&&
+e.examName===examName&&
 e.date===today
 );
 
 if(existing){
-let oldResults=JSON.parse(localStorage.getItem("examResults")||"[]");
-let oldResult=oldResults.find(e=>
-e.student===student&&
-e.grade===grade&&
-e.subject===subject&&
-e.date===today
-);
-if(oldResult){
+
 document.getElementById("studentResult").innerText=
-"Your Score: "+oldResult.score+"/"+oldResult.total+
-" ("+(oldResult.percentage||0).toFixed(1)+"%) - "+
-(oldResult.status||"Not Recorded");
-}
-else{
-document.getElementById("studentResult").innerText=
-"You have already submitted this exam. Old result details are unavailable.";
-}
+"You have already submitted this exam.";
 
 if(existing.questions&&existing.answers){
 let reviewHTML="<h3>Exam Review</h3>";
+
 existing.questions.forEach((q,i)=>{
 let chosen=existing.answers[i]||"No Answer";
 reviewHTML+=`<p><b>${i+1}. ${q.question}</b></p>`;
@@ -1995,6 +1988,7 @@ return;
 }
 
 let score=0;
+
 selected.forEach((q,i)=>{
 if(examAnswers[i]&&examAnswers[i]===q.correct){
 score++;
@@ -2006,11 +2000,13 @@ let passMark=parseInt(settings.passMark)||50;
 let percentage=(score/selected.length)*100;
 let status=percentage>=passMark?"PASS":"FAIL";
 
-document.getElementById("studentResult").innerText=
-"Your Score: "+score+"/"+selected.length+
-" ("+percentage.toFixed(1)+"%) - "+status;
+document.getElementById("submitExamBtn").disabled=true;
+document.getElementById("studentResult").innerText="Saving your result...";
 
-saveExamResult(grade,subject,score,selected.length);
+try{
+
+await saveExamResult(grade,subject,score,selected.length);
+
 let result={
 student:student,
 studentName:document.getElementById("studentFullName").value.trim(),
@@ -2018,7 +2014,7 @@ studentID:document.getElementById("studentID").value.trim(),
 section:document.getElementById("studentSection").value.trim(),
 grade:grade,
 subject:subject,
-  examName:currentExamQuestions[0].examName,
+examName:examName,
 score:score,
 total:selected.length,
 percentage:percentage,
@@ -2031,7 +2027,12 @@ questions:selected
 submitted.push(result);
 localStorage.setItem("submittedExams",JSON.stringify(submitted));
 
+document.getElementById("studentResult").innerText=
+"Your Score: "+score+"/"+selected.length+
+" ("+percentage.toFixed(1)+"%) - "+status;
+
 let reviewHTML="<h3>Exam Review</h3>";
+
 selected.forEach((q,i)=>{
 let chosen=examAnswers[i]||"No Answer";
 reviewHTML+=`<p><b>${i+1}. ${q.question}</b></p>`;
@@ -2055,9 +2056,19 @@ input.disabled=true;
 
 document.getElementById("prevQuestionBtn").disabled=true;
 document.getElementById("nextQuestionBtn").disabled=true;
-document.getElementById("submitExamBtn").disabled=true;
+
+}catch(error){
+
+document.getElementById("studentResult").innerText=
+"Result saving failed. Please contact the administrator.";
+
+document.getElementById("submitExamBtn").disabled=false;
+console.error(error);
 
 }
+
+}
+
 
 
 let examTime = 60 * 60;
@@ -2936,36 +2947,57 @@ showResults(activeResultsContainer);
 
 
   
-function saveExamResult(grade, subject, score, total){
-
-let examResults = JSON.parse(localStorage.getItem("examResults") || "[]");
+async function saveExamResult(grade, subject, score, total){
 
 let settings = JSON.parse(localStorage.getItem("examSettings") || "{}");
 let passMark = parseInt(settings.passMark) || 50;
 
 let percentage = (score / total) * 100;
 let status = percentage >= passMark ? "PASS" : "FAIL";
-let today = new Date().toLocaleDateString();
+
+let today = new Date().toISOString().slice(0,10);
+
 let result = {
-student: currentUser,
-studentName: document.getElementById("studentFullName").value.trim(),
-studentID: document.getElementById("studentID").value.trim(),
-section: document.getElementById("studentSection").value.trim(),
-grade: grade,
-subject: subject,
+  student: currentUser,
+  studentName: document.getElementById("studentFullName").value.trim(),
+  studentID: document.getElementById("studentID").value.trim(),
+  section: document.getElementById("studentSection").value.trim(),
+  grade: grade,
+  subject: subject,
   examName: currentExamQuestions[0].examName,
-score: score,
-total: total,
-percentage: percentage,
-status: status,
+  score: score,
+  total: total,
+  percentage: percentage,
+  status: status,
   date: today,
+  teacher_name: currentExamQuestions[0].teacher || ""
 };
 
-examResults.push(result);
+const response = await fetch(
+  "https://awxabgwdvgzchrpnycbl.supabase.co/functions/v1/save-exam-result",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "apikey": SUPABASE_KEY
+    },
+    body: JSON.stringify(result)
+  }
+);
 
+const data = await response.json();
+
+if (!response.ok || !data.success) {
+  throw new Error(data.error || "Result saving failed");
+}
+
+let examResults = JSON.parse(localStorage.getItem("examResults") || "[]");
+examResults.push(result);
 localStorage.setItem("examResults", JSON.stringify(examResults));
 
+return result;
 }
+
 
 
   
