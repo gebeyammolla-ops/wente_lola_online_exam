@@ -1139,15 +1139,50 @@ async function showStudents(){
 
 
   
-function deleteStudent(index){
-  let students=JSON.parse(localStorage.getItem("students")||"[]");
+async function deleteStudent(studentId){
 
-  if(confirm("Delete this student?")){
-    students.splice(index,1);
-    localStorage.setItem("students",JSON.stringify(students));
+  if(!confirm("Delete this student?")) return;
+
+  try {
+    const { data: sessionData, error: sessionError } =
+      await supabaseClient.auth.getSession();
+
+    if(sessionError || !sessionData.session){
+      alert("Admin login required. Please login again.");
+      return;
+    }
+
+    const response = await fetch(
+      "https://awxabgwdvgzchrpnycbl.supabase.co/functions/v1/student-delete",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": "Bearer " + sessionData.session.access_token
+        },
+        body: JSON.stringify({
+          id: studentId
+        })
+      }
+    );
+
+    const result = await response.json();
+
+    if(!response.ok || !result.success){
+      alert("Student deletion failed: " + (result.error || "Unknown error"));
+      return;
+    }
+
+    alert("Student deleted successfully!");
     showStudents();
+
+  } catch(error) {
+    console.error(error);
+    alert("Connection error. Please try again.");
   }
 }
+
 
 
   
